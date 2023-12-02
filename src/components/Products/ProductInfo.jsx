@@ -175,7 +175,6 @@
 //   )
 // }
 
-
 import React, { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { BsCartFill } from "react-icons/bs"
@@ -190,7 +189,6 @@ export const ProductInfo = ({
   name,
   description,
   price,
-  state,
   showTryButton,
   availableQuantity,
 }) => {
@@ -221,13 +219,29 @@ export const ProductInfo = ({
   const [quantity, setQuantity] = useState(1)
   // const { dispatch } = useCart()
   const incrementQuantity = () => {
-    setQuantity(quantity + 1)
+    console.log("increment")
+    // setQuantity(quantity + 1)
+    // console.log("quantity inside increment", quantity)
+
+    // if (quantity > availableQuantity) {
+    //   toast.error("Cannot add more than available quantity")
+    //   setSelectedMore(true)
+    // }
+
+    setQuantity((prev) => {
+      if (prev < availableQuantity) {
+        return prev + 1
+      } else {
+        return prev
+      }
+    })
 
     if (quantity >= availableQuantity) {
       toast.error("Cannot add more than available quantity")
       setSelectedMore(true)
     }
   }
+  // console.log(quantity)
 
   const decrementQuantity = () => {
     if (quantity > 1) {
@@ -297,8 +311,7 @@ export const ProductInfo = ({
             )}
           </div>
           <p className="text-xl font-sans mb-2 p-2">{description}</p>
-          <p>Available Quantity: {availableQuantity}</p>
-          <div className="flex items-center space-x-30 text-2xl p-2 mt-4">
+          <div className="flex items-center space-x-30 text-2xl mt-4">
             <p className="mr-4 flex">Quantity</p>
             <div className="flex gap-1">
               <button
@@ -308,19 +321,32 @@ export const ProductInfo = ({
                 -
               </button>
               <span className="mx-2">{quantity}</span>
+
               <button
                 onClick={incrementQuantity}
-                className="bg-gray-300 text-gray-700  px-[14px] py-1 rounded-full focus:outline-none"
+                className={`bg-gray-300 text-gray-700  px-[14px] py-1 rounded-full focus:outline-none
+                ${selectedMore ? "opacity-70 cursor-not-allowed" : ""}
+                `}
+                disabled={selectedMore}
               >
                 +
               </button>
             </div>
           </div>
+          <p className="mt-2">Available Quantity: {availableQuantity}</p>
           <div className="flex flex-row mt-6 items-center justify-between px-2">
             <div>
               <h1 className="text-[#999999]">Price</h1>
-              <p className="mb-4 text-2xl font-bold text-accent">Rs.{price}</p>
+              <p className="text-2xl font-bold text-accent">Rs.{price}</p>
             </div>
+          </div>
+          <div className="flex flex-row items-center justify-between px-2 mt-2 mb-5">
+            <h1 className="text-[#999999] text-2xl">
+              Total Price:
+              <span className="text-2xl ml-2 font-bold text-accent">
+                Rs. {quantity * price}
+              </span>
+            </h1>
           </div>
           <div className="flex flex-row space-x-8 pb-16">
             <Link

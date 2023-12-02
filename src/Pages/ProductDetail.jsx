@@ -14,7 +14,7 @@ const ProductDetail = () => {
 
   const location = useLocation()
   // console.log(location)
-  const { state } = location
+  // const { state } = location
   // console.log(state)
 
   const [product, setProduct] = useState()
@@ -26,7 +26,7 @@ const ProductDetail = () => {
   useEffect(() => {
     // console.log(allProducts)
     const product = allProducts.find((product) => product._id === productId)
-    console.log(product)
+    // console.log(product)
     setProduct(product)
   }, [])
 
@@ -47,16 +47,15 @@ const ProductDetail = () => {
         />
         {/* <img src={account} alt="Account" className="ml-auto" /> */}
       </div>
-      <ProductImage src={product.images[0].url} alt={product.name} />
+      <ProductImage images={product.images} />
 
       <ProductInfo
         id={product._id}
         name={product.name}
         description={product.description}
         price={product.price}
-        state={state}
         showTryButton={true}
-        availableQuantity={product.qty}
+        availableQuantity={product.quantity}
       />
     </div>
   )

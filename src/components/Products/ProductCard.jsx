@@ -11,7 +11,7 @@ const ProductCard = (props) => {
       <div className="rounded-md bg-white self-start font-sans">
         <div className="p-4 mb-4">
           <div className="w-56">
-            <Link to={`/product/${props.id}`} state={props}>
+            <Link to={`/product/${props.id}`}>
               <img
                 src={props.src}
                 alt="products"

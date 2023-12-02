@@ -6,8 +6,9 @@ export const useProductsStore = create((set) => {
   const fetchProducts = async () => {
     try {
       console.log("Fetching all products")
-      const response = await axios.get(`${API_URL}/product/all`)
+      const response = await axios.get(`${API_URL}/products/all`)
       const { data } = response
+      // console.log(data)
 
       set({ allProducts: data.productsData })
     } catch (error) {
