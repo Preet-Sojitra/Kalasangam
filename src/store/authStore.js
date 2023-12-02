@@ -3,16 +3,20 @@ import { create } from "zustand"
 export const useAuthStore = create((set) => {
   // Check if accessToken is present in local storage
   const existingAccessToken = localStorage.getItem("accessToken")
+  const existingRole = localStorage.getItem("role")
 
-  set({ accessToken: existingAccessToken })
+  set({ accessToken: existingAccessToken, role: existingRole })
 
   return {
     accessToken: existingAccessToken || null,
+    role: existingRole || null,
     setAccessToken: (accessToken) => set({ accessToken }),
+    setRole: (role) => set({ role }),
     handleLogout: () => {
       localStorage.removeItem("accessToken")
+      localStorage.removeItem("role")
 
-      return set({ accessToken: null })
+      return set({ accessToken: null, role: null })
     },
   }
 

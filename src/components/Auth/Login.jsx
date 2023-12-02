@@ -11,6 +11,7 @@ const Login = () => {
   const navigate = useNavigate()
 
   const setAccessToken = useAuthStore((state) => state.setAccessToken)
+  const setRole = useAuthStore((state) => state.setRole)
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -50,9 +51,11 @@ const Login = () => {
       console.log(data)
 
       setAccessToken(data.accessToken)
+      setRole(data.role)
 
-      // add accessToken to local storage
+      // add accessToken and to local storage
       localStorage.setItem("accessToken", data.accessToken)
+      localStorage.setItem("role", data.role)
 
       toast.success("Logged in successfully")
       setIsLoading(false)

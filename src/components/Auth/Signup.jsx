@@ -16,6 +16,7 @@ export const Signup = () => {
   const who = params.get("who")
 
   const setAccssToken = useAuthStore((state) => state.setAccessToken)
+  const setRole = useAuthStore((state) => state.setRole)
 
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -57,13 +58,15 @@ export const Signup = () => {
       })
       // console.log(res)
       const { data } = res
-      // console.log(data)
+      console.log(data)
 
       setIsLoading(false)
       setAccssToken(data.accessToken)
+      setRole(data.role)
 
-      // Set the token in local storage
+      // Set the token and role in local storage
       localStorage.setItem("accessToken", data.accessToken)
+      localStorage.setItem("role", data.role)
 
       toast.success("Registered Successfully")
 
