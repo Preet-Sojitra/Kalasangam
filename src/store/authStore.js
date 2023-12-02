@@ -1,28 +1,38 @@
 import { create } from "zustand"
 
 export const useAuthStore = create((set) => {
-  const existingRole = getCookie("role")
-  const existingAccessToken = getCookie("accessToken")
+  // Check if accessToken is present in local storage
+  const existingAccessToken = localStorage.getItem("accessToken")
 
-  set({ role: existingRole, accessToken: existingAccessToken })
+  set({ accessToken: existingAccessToken })
 
   return {
-    role: existingRole || null,
-    setRole: (role) => set({ role: role }),
-    accessToken: existingAccessToken,
+    accessToken: existingAccessToken || null,
     setAccessToken: (accessToken) => set({ accessToken }),
-    handleLogout: () => {
-      // clear the cookies
-      // From stackoverflow :)
-      document.cookie.split(";").forEach((c) => {
-        document.cookie = c
-          .replace(/^ +/, "")
-          .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/")
-      })
-
-      return set({ role: null, accessToken: null })
-    },
   }
+
+  // const existingRole = getCookie("role")
+  // const existingAccessToken = getCookie("accessToken")
+
+  // set({ role: existingRole, accessToken: existingAccessToken })
+
+  // return {
+  //   role: existingRole || null,
+  //   setRole: (role) => set({ role: role }),
+  //   accessToken: existingAccessToken,
+  //   setAccessToken: (accessToken) => set({ accessToken }),
+  //   handleLogout: () => {
+  //     // clear the cookies
+  //     // From stackoverflow :)
+  //     document.cookie.split(";").forEach((c) => {
+  //       document.cookie = c
+  //         .replace(/^ +/, "")
+  //         .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/")
+  //     })
+
+  //     return set({ role: null, accessToken: null })
+  //   },
+  // }
 })
 
 // export const useAuthStore = create((set) => ({

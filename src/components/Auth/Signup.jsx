@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Link, useNavigate } from "react-router-dom" // Import the Link component
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import background from "../../assets/bgimage.jpg"
 import toast, { Toaster } from "react-hot-toast"
 import axios from "axios"
@@ -7,8 +7,13 @@ import { useAuthStore } from "../../store/authStore"
 
 const API_URL = import.meta.env.VITE_API_URL
 
-export const UserSignup = () => {
+export const Signup = () => {
+  const location = useLocation()
   const navigate = useNavigate()
+
+  const { search } = location
+  const params = new URLSearchParams(search)
+  const who = params.get("who")
 
   const setAccssToken = useAuthStore((state) => state.setAccessToken)
   const setRole = useAuthStore((state) => state.setRole)
@@ -18,7 +23,6 @@ export const UserSignup = () => {
     mobile: "",
     name: "",
     password: "",
-    address:""
   })
 
   const handleChange = (e) => {
@@ -33,7 +37,6 @@ export const UserSignup = () => {
       formData.mobile === "" ||
       formData.name === "" ||
       formData.age === "" ||
-      formData.address === "" ||
       formData.password === ""
     ) {
       toast.error("Please fill all the fields")
@@ -49,17 +52,23 @@ export const UserSignup = () => {
     // Send the data to the server
     try {
       setIsLoading(true)
-      const res = await axios.post(`${API_URL}/user/register`, formData, {
-        withCredentials: true,
+      const res = await axios.post(`${API_URL}/auth/signup`, {
+        ...formData,
+        role: who === "artisan" ? "artisan" : "customer",
       })
       // console.log(res)
       const { data } = res
-      console.log(data)
+      // console.log(data)
+
       setIsLoading(false)
+      setAccssToken(data.accessToken)
+
+      // Set the token in local storage
+      localStorage.setItem("accessToken", data.accessToken)
+
       toast.success("Registered Successfully")
 
-      setAccssToken(data.accessToken)
-      setRole("user")
+      // setRole("user")
 
       // ? Once the user is registered, redirect them to either login page or home page
       navigate("/home")
@@ -67,8 +76,9 @@ export const UserSignup = () => {
       console.log("Error Registering User: 👇")
       console.log(error)
 
-      if (error.response.status == 403) {
-        toast.error("Mobile number already exists")
+      if (error.response.status == 400) {
+        const { msg } = error.response.data
+        toast.error(msg)
       } else {
         toast.error("Something went wrong")
       }
@@ -103,7 +113,7 @@ export const UserSignup = () => {
                 type="text"
                 id="mobile"
                 name="mobile"
-                className="w-full p-2 mt-1 border rounded-md text-white"
+                className="w-full p-2 mt-1 border rounded-md"
                 placeholder="Enter your mobile number"
                 value={formData.number}
                 onChange={handleChange}
@@ -121,24 +131,9 @@ export const UserSignup = () => {
                 required
                 id="name"
                 name="name"
-                className="w-full p-2 mt-1 border rounded-md text-white"
+                className="w-full p-2 mt-1 border rounded-md"
                 placeholder="Enter your name"
                 value={formData.name}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="mb-4 text-black">
-              <label htmlFor="name" className="block text-xl font-medium">
-                Address
-              </label>
-              <input
-                type="text"
-                required
-                id="address"
-                name="address"
-                className="w-full p-2 mt-1 border rounded-md"
-                placeholder="Enter your address"
-                value={formData.address}
                 onChange={handleChange}
               />
             </div>
@@ -154,7 +149,7 @@ export const UserSignup = () => {
                 required
                 id="password"
                 name="password"
-                className="w-full p-2 mt-1 border rounded-md text-white"
+                className="w-full p-2 mt-1 border rounded-md"
                 placeholder="Enter Strong Password"
                 value={formData.password}
                 onChange={handleChange}

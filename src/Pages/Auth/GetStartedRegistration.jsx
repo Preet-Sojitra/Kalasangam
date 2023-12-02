@@ -8,10 +8,10 @@ export const GetStartedRegistration = () => {
 
   const createAccount = () => {
     if (selectedOption === "user") {
-      navigate("/auth/signup/user")
+      navigate("/auth/signup?who=user")
     }
-    if (selectedOption === "seller") {
-      navigate("/auth/signup/artisian")
+    if (selectedOption === "artisan") {
+      navigate("/auth/signup?who=artisan")
     }
   }
 
@@ -47,10 +47,10 @@ export const GetStartedRegistration = () => {
               </button>
               <button
                 className={`flex gap-4 p-2 rounded-lg bg-white/[0.1] border-[1px] hover:border-accent hover:duration-500 hover:ease-in-out w-full
-                ${selectedOption === "seller" && " border-accent"}
+                ${selectedOption === "artisan" && " border-accent"}
                 `}
                 onClick={() => {
-                  setSelectedOption("seller")
+                  setSelectedOption("artisan")
                 }}
               >
                 <FaStore className="text-2xl mt-2" />

@@ -22,25 +22,26 @@ export const Nav = () => {
 
   const accssToken = useAuthStore((state) => state.accessToken)
   const setAccssToken = useAuthStore((state) => state.setAccessToken)
+
   const role = useAuthStore((state) => state.role)
   const setRole = useAuthStore((state) => state.setRole)
 
-  // console.log(accssToken)
+  console.log(accssToken)
   // console.log(role)
 
-  useEffect(() => {
-    const cookie = document.cookie
-    // console.log(document.cookie)
-    const cookieArr = cookie.split(";")
-    // console.log(cookieArr)
+  // useEffect(() => {
+  //   const cookie = document.cookie
+  //   // console.log(document.cookie)
+  //   const cookieArr = cookie.split(";")
+  //   // console.log(cookieArr)
 
-    if (cookieArr[0]?.split("=")[0] === "accessToken") {
-      setAccssToken(cookieArr[0].split("=")[1])
-    }
-    if (cookieArr[1]?.split("=")[0] === "role") {
-      setRole(cookieArr[1].split("=")[1])
-    }
-  }, [accssToken])
+  //   if (cookieArr[0]?.split("=")[0] === "accessToken") {
+  //     setAccssToken(cookieArr[0].split("=")[1])
+  //   }
+  //   if (cookieArr[1]?.split("=")[0] === "role") {
+  //     setRole(cookieArr[1].split("=")[1])
+  //   }
+  // }, [accssToken])
 
   const location = useLocation()
 

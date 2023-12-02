@@ -12,7 +12,7 @@ import ProductDetail from "./Pages/ProductDetail"
 import Analytics from "./Pages/Dashboard/Analytics"
 import Login from "./components/Auth/Login"
 import { ArtisanSignup } from "./components/Auth/ArtisanSignup"
-import { UserSignup } from "./components/Auth/UserSignup"
+import { Signup } from "./components/Auth/Signup"
 import AR from "./Pages/AR"
 import Account from "./Pages/Account"
 import AddProduct from "./Pages/Dashboard/AddProduct"
@@ -55,8 +55,8 @@ function App() {
             {/* <Route path="addproduct" element={<AddProduct />} /> */}
           </Route>
           <Route path="/auth/login" element={<Login />} />
-          <Route path="/auth/signup/artisian" element={<ArtisanSignup />} />
-          <Route path="/auth/signup/user" element={<UserSignup />} />
+          {/* <Route path="/auth/signup" element={<ArtisanSignup />} /> */}
+          <Route path="/auth/signup" element={<Signup />} />
           <Route path="/account" element={<Account />} />
           <Route path="/artisian/addproduct" element={<AddProduct />} />
           <Route path="/buynow" element={<BuyNow />} />
