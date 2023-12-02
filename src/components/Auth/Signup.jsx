@@ -16,7 +16,6 @@ export const Signup = () => {
   const who = params.get("who")
 
   const setAccssToken = useAuthStore((state) => state.setAccessToken)
-  const setRole = useAuthStore((state) => state.setRole)
 
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -68,9 +67,6 @@ export const Signup = () => {
 
       toast.success("Registered Successfully")
 
-      // setRole("user")
-
-      // ? Once the user is registered, redirect them to either login page or home page
       navigate("/home")
     } catch (error) {
       console.log("Error Registering User: 👇")
@@ -174,7 +170,10 @@ export const Signup = () => {
           </div>
           <p className="text-gray-600 text-center">
             Already have an account?{" "}
-            <Link to="/auth/login" className="text-blue-500 hover:underline">
+            <Link
+              to="/auth/get-started/login"
+              className="text-blue-500 hover:underline"
+            >
               Login
             </Link>
           </p>

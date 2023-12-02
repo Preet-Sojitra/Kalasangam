@@ -9,13 +9,8 @@ const API_URL = import.meta.env.VITE_API_URL
 
 const Login = () => {
   const navigate = useNavigate()
-  const location = useLocation()
-
-  const query = new URLSearchParams(location.search)
-  // console.log(query.get("role"))
 
   const setAccessToken = useAuthStore((state) => state.setAccessToken)
-  const setRole = useAuthStore((state) => state.setRole)
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -50,39 +45,19 @@ const Login = () => {
     try {
       setIsLoading(true)
 
-      if (query.get("role") === "artisian") {
-        console.log("Artisan trying to login")
-        const res = await axios.post(`${API_URL}/artisian/login`, formData, {
-          withCredentials: true,
-        })
-        const { data } = res
-        console.log(data)
+      const res = await axios.post(`${API_URL}/auth/login`, formData)
+      const { data } = res
+      console.log(data)
 
-        setAccessToken(data.accessToken)
-        setRole("artisian")
+      setAccessToken(data.accessToken)
 
-        // If artisian, then navigate to the dashboard
-        navigate("/dashboard/analytics")
-      } else if (query.get("role") === "user") {
-        console.log("User trying to login")
-        const res = await axios.post(`${API_URL}/user/login`, formData, {
-          withCredentials: true,
-        })
-        const { data } = res
-        console.log(data)
-
-        setAccessToken(data.token)
-        setRole("user")
-
-        // If user, then nvigate to home
-        /navigate("/home")
-        
-      }
+      // add accessToken to local storage
+      localStorage.setItem("accessToken", data.accessToken)
 
       toast.success("Logged in successfully")
       setIsLoading(false)
 
-      // TODO: After login, redirect to the where? Need to figure out
+      navigate("/home")
     } catch (error) {
       console.log("Error Logging in Artisan: 👇")
       console.log(error)
@@ -123,7 +98,7 @@ const Login = () => {
                 required
                 id="mobile"
                 name="mobile"
-                className="w-full p-2 mt-1 border rounded-md text-white"
+                className="w-full p-2 mt-1 border rounded-md"
                 placeholder="Enter your mobile number"
                 value={formData.number}
                 onChange={handleChange}
@@ -141,7 +116,7 @@ const Login = () => {
                 required
                 id="password"
                 name="password"
-                className="w-full p-2 mt-1 border rounded-md text-white"
+                className="w-full p-2 mt-1 border rounded-md"
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
@@ -164,9 +139,9 @@ const Login = () => {
             </div>
           </form>
           <p className="text-gray-600 text-center">
-            Don't have an account? {/* // TODO: Need to Figure out route */}
+            Don't have an account?
             <Link
-              to="/auth/signup/user"
+              to="/auth/get-started/register"
               className="text-blue-500 hover:underline"
             >
               Sign up
