@@ -71,13 +71,7 @@ export const Nav = () => {
           </div>
         </Link>
 
-        <Link
-          to={
-            accssToken && role === "user"
-              ? "/profile"
-              : "/auth/get-started/login"
-          }
-        >
+        <Link to={accssToken ? "/myprofile" : "/auth/get-started/login"}>
           <div className="flex flex-col items-center gap-[1px] cursor-pointer">
             <VscAccount
               className={`text-[22px] ${

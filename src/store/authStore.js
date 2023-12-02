@@ -9,6 +9,11 @@ export const useAuthStore = create((set) => {
   return {
     accessToken: existingAccessToken || null,
     setAccessToken: (accessToken) => set({ accessToken }),
+    handleLogout: () => {
+      localStorage.removeItem("accessToken")
+
+      return set({ accessToken: null })
+    },
   }
 
   // const existingRole = getCookie("role")
