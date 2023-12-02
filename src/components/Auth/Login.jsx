@@ -140,6 +140,17 @@ const Login = () => {
                 {isLoading ? "Logging in..." : "Login"}
               </button>
             </div>
+
+            <Link to="/auth/login/sms">
+              <div className="flex items-center justify-center my-6">
+                <button
+                  className={`text-black border-2  border-accent py-2 text-xl font-bold text-center rounded-lg flex justify-center px-4 items-center gap-1
+                `}
+                >
+                  Login with OTP
+                </button>
+              </div>
+            </Link>
           </form>
           <p className="text-gray-600 text-center">
             Don't have an account?

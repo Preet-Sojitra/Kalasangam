@@ -11,6 +11,7 @@ import AllProducts from "./Pages/AllProducts"
 import ProductDetail from "./Pages/ProductDetail"
 import Analytics from "./Pages/Dashboard/Analytics"
 import Login from "./components/Auth/Login"
+import LoginWithOTP from "./components/Auth/LoginWithOTP"
 import { ArtisanSignup } from "./components/Auth/ArtisanSignup"
 import { Signup } from "./components/Auth/Signup"
 import AR from "./Pages/AR"
@@ -56,6 +57,7 @@ function App() {
             {/* <Route path="addproduct" element={<AddProduct />} /> */}
           </Route>
           <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/login/sms" element={<LoginWithOTP />} />
           {/* <Route path="/auth/signup" element={<ArtisanSignup />} /> */}
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/account" element={<Account />} />
