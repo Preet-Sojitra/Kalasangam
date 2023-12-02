@@ -3,55 +3,76 @@ import React, { useState } from "react"
 import axios from "axios"
 import toast, { Toaster } from "react-hot-toast"
 import { Nav } from "../../components/Nav"
+import { useAuthStore } from "../../store/authStore"
 
 const API_URL = import.meta.env.VITE_API_URL
 
 const AddProduct = () => {
+  const accessToken = useAuthStore((state) => state.accessToken)
   const [loading, setLoading] = useState(false)
 
   const [formData, setFormData] = useState({
     name: "",
     price: "",
     description: "",
-    qty: 0,
+    quantity: 0,
     images: null, // For file input
   })
 
   const handleInputChange = (e) => {
-    const { name, value, files } = e.target
+    const { name, value } = e.target
 
-    if (name === "images") {
-      setFormData({
-        ...formData,
-        [name]: files[0], // Store the selected file in the state
-      })
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      })
-    }
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+
+    // if (name === "images") {
+    //   setFormData({
+    //     ...formData,
+    //     [name]: files[0], // Store the selected file in the state
+    //   })
+    // } else {
+    //   setFormData({
+    //     ...formData,
+    //     [name]: value,
+    //   })
+    // }
+  }
+
+  const [files, setFiles] = useState([]) // For file input
+
+  const handleFileChange = (e) => {
+    setFiles(e.target.files)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    console.log("clicked")
+    // console.log(files)
 
     const formDataToSend = new FormData()
     formDataToSend.append("name", formData.name)
     formDataToSend.append("price", formData.price)
     formDataToSend.append("description", formData.description)
-    formDataToSend.append("qty", formData.qty)
-    formDataToSend.append("images", formData.images) // Append the selected file
+    formDataToSend.append("quantity", formData.quantity)
+    // Append the files
+    for (let i = 0; i < files.length; i++) {
+      formDataToSend.append("images", files[i])
+    }
 
     try {
       setLoading(true)
       const response = await axios.post(
-        `${API_URL}/product/add`,
-        formDataToSend
+        `${API_URL}/artisan/product/add`,
+        formDataToSend,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       )
-      console.log(response.data.message)
+      console.log(response.data)
       toast.success("Product add successfully")
       setLoading(false)
 
@@ -81,7 +102,7 @@ const AddProduct = () => {
           <label className="block text-xl font-medium">Name:</label>
           <input
             type="text"
-            className="w-full p-2 mt-1 border rounded-md text-white"
+            className="w-full p-2 mt-1 border rounded-md"
             name="name"
             value={formData.name}
             onChange={handleInputChange}
@@ -91,9 +112,9 @@ const AddProduct = () => {
           <label className="block text-xl font-medium">Quantity:</label>
           <input
             type="number"
-            className="w-full p-2 mt-1 border rounded-md text-white"
-            name="qty"
-            value={formData.qty}
+            className="w-full p-2 mt-1 border rounded-md"
+            name="quantity"
+            value={formData.quantity}
             onChange={handleInputChange}
           />
         </div>
@@ -101,7 +122,7 @@ const AddProduct = () => {
           <label className="block text-xl font-medium">Price:</label>
           <input
             type="number"
-            className="w-full p-2 mt-1 border rounded-md text-white"
+            className="w-full p-2 mt-1 border rounded-md"
             name="price"
             value={formData.price}
             onChange={handleInputChange}
@@ -111,7 +132,7 @@ const AddProduct = () => {
           <label className="block text-xl font-medium">Description:</label>
           <textarea
             name="description"
-            className="w-full p-2 mt-1 border rounded-md text-white"
+            className="w-full p-2 mt-1 border rounded-md "
             value={formData.description}
             onChange={handleInputChange}
           />
@@ -122,7 +143,8 @@ const AddProduct = () => {
             type="file"
             className="w-full p-2 mt-1 border rounded-md"
             name="images"
-            onChange={handleInputChange}
+            multiple
+            onChange={handleFileChange}
           />
         </div>
         <button

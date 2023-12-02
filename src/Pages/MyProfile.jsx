@@ -2,12 +2,14 @@
 import React, { useEffect } from "react"
 import { useAuthStore } from "../store/authStore"
 import { useNavigate } from "react-router"
+import { Link } from "react-router-dom"
 
 export const MyProfile = () => {
   const navigate = useNavigate()
 
   const handleLogout = useAuthStore((state) => state.handleLogout)
   const accessToken = useAuthStore((state) => state.accessToken)
+  const role = useAuthStore((state) => state.role)
 
   useEffect(() => {
     if (!accessToken) {
@@ -55,6 +57,17 @@ export const MyProfile = () => {
           </p>
         </div>
       </div>
+
+      {/* If Role is Artisan then show  */}
+      {role === "artisan" && (
+        <>
+          <Link to="/dashboard/analytics">
+            <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+              Dashboard
+            </button>
+          </Link>
+        </>
+      )}
     </div>
   )
 }

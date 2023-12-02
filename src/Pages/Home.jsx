@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import NavBar from "../components/NavBar"
 import search from "../assets/search.svg"
 import ProductCard from "../components/Products/ProductCard.jsx"
@@ -8,6 +8,13 @@ import { Nav } from "../components/Nav.jsx"
 import { useProductsStore } from "../store/productsStore.js"
 
 const Home = () => {
+  // Keep this commented out for now. Use case of this:
+  // When the user visits the home page, we want to fetch all the products from the backend and store it in the store.
+
+  // useEffect(() => {
+  //   useProductsStore.getState().fetchProducts()
+  // }, [])
+
   const allProducts = useProductsStore((state) => state.allProducts)
   console.log(allProducts)
 
