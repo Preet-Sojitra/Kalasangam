@@ -4,6 +4,7 @@ import background from "../../assets/bgimage.jpg"
 import toast, { Toaster } from "react-hot-toast"
 import axios from "axios"
 import { useAuthStore } from "../../store/authStore"
+import { GoogleOauth } from "./GoogleOauth"
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -151,6 +152,8 @@ const Login = () => {
                 </button>
               </div>
             </Link>
+
+            <GoogleOauth />
           </form>
           <p className="text-gray-600 text-center">
             Don't have an account?

@@ -3,9 +3,10 @@ import NavBar from "../components/NavBar"
 import search from "../assets/search.svg"
 import ProductCard from "../components/Products/ProductCard.jsx"
 import { Link } from "react-router-dom"
-import products from "../data/products.js"
-import { Nav } from "../components/Nav.jsx"
+// import products from "../data/products.js"
+// import { Nav } from "../components/Nav.jsx"
 import { useProductsStore } from "../store/productsStore.js"
+import { useAuthStore } from "../store/authStore.js"
 
 const Home = () => {
   // Keep this commented out for now. Use case of this:
@@ -17,8 +18,39 @@ const Home = () => {
 
   const allProducts = useProductsStore((state) => state.allProducts)
   console.log(allProducts)
+  const setAccessToken = useAuthStore((state) => state.setAccessToken)
+  const setRole = useAuthStore((state) => state.setRole)
 
   const [selectedCategory, setSelectedCategory] = useState("Popular")
+
+  useEffect(() => {
+    // When user lands on this page, if cookies are present, store them to the store and local storage.
+    // Because when user logs in with google, the response from the backend will come with the cookies and not the accessToken.
+    // So we need to store the cookies in the store and local storage.
+
+    // console.log(document.cookie)
+    if (document.cookie) {
+      console.log("Cookies are present")
+      const cookies = document.cookie.split("; ")
+      console.log(cookies)
+
+      const accessTokenCookie = cookies.find((cookie) =>
+        cookie.includes("accessToken")
+      )
+      const roleCookie = cookies.find((cookie) => cookie.includes("role"))
+
+      setAccessToken(accessTokenCookie.split("=")[1])
+      setRole(roleCookie.split("=")[1])
+
+      localStorage.setItem("accessToken", accessTokenCookie.split("=")[1])
+      localStorage.setItem("role", roleCookie.split("=")[1])
+
+      // Now that we have stored the cookies in the store and local storage, we can delete the cookies.
+      document.cookie =
+        "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+      document.cookie = "role=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    }
+  }, [])
 
   return (
     <>
