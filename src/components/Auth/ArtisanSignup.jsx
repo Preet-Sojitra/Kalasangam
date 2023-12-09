@@ -1,3 +1,7 @@
+/**
+ * ! THIS COMPONENT IS NOT USED ANYMORE. IT IS REPLACED BY THE SIGNUP COMPONENT
+ */
+
 import React, { useState } from "react"
 import { Link } from "react-router-dom" // Import the Link component
 import background from "../../assets/bgimage.jpg"

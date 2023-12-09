@@ -171,6 +171,17 @@ export const Signup = () => {
               {isLoading ? "Registering..." : "Register"}
             </button>
           </div>
+
+          <Link to={`/auth/login/sms?who=${who}`}>
+            <div className="flex items-center justify-center my-6">
+              <button
+                className={`text-black border-2  border-accent py-2 text-xl font-bold text-center rounded-lg flex justify-center px-4 items-center gap-1
+                `}
+              >
+                Register with OTP
+              </button>
+            </div>
+          </Link>
           <p className="text-gray-600 text-center">
             Already have an account?{" "}
             <Link

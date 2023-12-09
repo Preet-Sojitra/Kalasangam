@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { Link, redirect, useLocation, useNavigate } from "react-router-dom" // Import the Link component
+import React, { useEffect, useState } from "react"
+import { Link, useLocation, useNavigate } from "react-router-dom" // Import the Link component
 import background from "../../assets/bgimage.jpg"
 import toast, { Toaster } from "react-hot-toast"
 import axios from "axios"
@@ -12,8 +12,11 @@ const API_URL = import.meta.env.VITE_API_URL
 
 const LoginWithOTP = () => {
   const navigate = useNavigate()
+  const location = useLocation()
 
-  const [otp, setOtp] = useState("")
+  const { search } = location
+  const params = new URLSearchParams(search)
+  const who = params.get("who")
 
   const setAccessToken = useAuthStore((state) => state.setAccessToken)
   const setRole = useAuthStore((state) => state.setRole)
@@ -23,59 +26,117 @@ const LoginWithOTP = () => {
   const [mobile, setMobile] = useState("")
   const [countryCode, setCountryCode] = useState("")
 
-  const handleLogin = async (e) => {
+  const [otp, setOtp] = useState("")
+  const [showOtpContainer, setShowOtpContainer] = useState(false)
+  const [otpSent, setOtpSent] = useState(false)
+
+  // OTP Resend Timer
+  const [timer, setTimer] = useState(6)
+  const [timerOn, setTimerOn] = useState(false)
+
+  useEffect(() => {
+    if (timerOn) {
+      if (timer > 0) {
+        setTimeout(() => setTimer(timer - 1), 1000)
+      } else {
+        setTimerOn(false)
+        setTimer(6)
+      }
+    }
+
+    return () => {
+      clearTimeout()
+    }
+  }, [timer, timerOn])
+  // console.log(timer)
+
+  const sendOTP = async (e) => {
     e.preventDefault()
-    //CHECKS: If any field is empty
-    if (mobile === "") {
-      toast.error("Please fill all the fields")
-      return
-    }
-
-    //CHECKS: If the mobile number is valid
-    if (mobile.length !== 10) {
-      toast.error("Please enter a valid mobile number")
-      return
-    }
-
-    // console.log(mobile)
+    // console.log(mobile.slice(countryCode.length))
     // console.log(countryCode)
 
+    // CHECKS: If any field is empty
+    if (mobile === "") {
+      toast.error("Please enter your mobile number")
+      return
+    }
+    if (countryCode === "") {
+      toast.error("Please select your country")
+      return
+    }
+
+    // CHECKS: If the mobile number is valid
+    if (mobile.slice(countryCode.length).length != 10) {
+      toast.error("Please enter 10 digit mobile number")
+      return
+    }
+
+    console.log(mobile)
+    console.log(countryCode)
+
+    toast.success("OTP sent successfully")
+
+    setOtpSent(true)
+    // Show the OTP container, cause the OTP is sent
+    setShowOtpContainer(true)
+
     // Send the data to the server
-    // try {
-    //   setIsLoading(true)
+    try {
+      const res = await axios.post(`${API_URL}/auth/send-otp`, {
+        mobile: mobile.slice(countryCode.length),
+        countryCode,
+      })
+      const { data } = res
+      console.log(data)
 
-    //   const res = await axios.post(`${API_URL}/auth/send-otp`, {
-    //     countryCode,
-    //     mobile,
-    //   })
-    //   const { data } = res
-    //   console.log(data)
+      setTimerOn(true)
+    } catch (error) {
+      console.log("Error Logging in Artisan: 👇")
+      console.log(error)
 
-    //   // setAccessToken(data.accessToken)
-    //   // setRole(data.role)
+      setShowOtpContainer(false)
+      setOtpSent(false)
+      setTimerOn(false)
 
-    //   // add accessToken and to local storage
-    //   // localStorage.setItem("accessToken", data.accessToken)
-    //   // localStorage.setItem("role", data.role)
+      if (error?.response?.status == 400) {
+        toast.error(error.response.data.msg)
+      } else {
+        toast.error("Something went wrong")
+      }
+    }
+  }
 
-    //   toast.success("OTP sent successfully")
-    //   setIsLoading(false)
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    // console.log(otp)
 
-    //   navigate("/home")
-    // } catch (error) {
-    //   console.log("Error Logging in Artisan: 👇")
-    //   console.log(error)
+    setIsLoading(true)
 
-    //   setIsLoading(false)
+    // Send the data to the server
+    try {
+      const res = await axios.post(`${API_URL}/auth/verify-otp`, {
+        countryCode,
+        mobile: mobile.slice(countryCode.length),
+        otp,
+        role: who === "artisan" ? "artisan" : "customer",
+      })
+      const { data } = res
+      console.log(data)
 
-    //   if (error.response.status == 403) {
-    //     toast.error("You are not registered")
-    //   } else if (error.response.status == 401) {
-    //     toast.error("Invalid credentials")
-    //   } else {
-    //     toast.error("Something went wrong")
-    //   }
-    // }
+      setAccessToken(data.accessToken)
+      setRole(data.role)
+      setIsLoading(false)
+
+      // add accessToken and to local storage
+      localStorage.setItem("accessToken", data.accessToken)
+      localStorage.setItem("role", data.role)
+
+      // navigate to home page
+      navigate("/home")
+    } catch (error) {
+      console.log(error)
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -102,7 +163,7 @@ const LoginWithOTP = () => {
                   country={"in"}
                   value={mobile}
                   onChange={(inputNumber, country) => {
-                    setMobile(inputNumber.slice(country.dialCode.length))
+                    setMobile(inputNumber)
                     setCountryCode(country.dialCode)
                   }}
                   inputProps={{
@@ -118,57 +179,85 @@ const LoginWithOTP = () => {
                   }}
                 />
 
-                <button className="px-2 bg-accent text-black w-[30%] rounded-md">
-                  Send OTP
+                <button
+                  className={`px-2 bg-accent text-black w-[30%] rounded-md
+                    ${
+                      otpSent ? "cursor-not-allowed opacity-50" : "opacity-100 "
+                    }
+                  `}
+                  onClick={sendOTP}
+                  disabled={otpSent}
+                >
+                  {otpSent ? "OTP Sent" : "Send OTP"}
                 </button>
               </div>
             </div>
 
-            <div className="mb-4 mt-6">
-              <label
-                htmlFor="otp"
-                className="block text-xl font-medium text-black mb-2"
-              >
-                Enter OTP
-              </label>
+            {showOtpContainer && (
+              <>
+                <div className="mb-4 mt-6">
+                  <label
+                    htmlFor="otp"
+                    className="block text-xl font-medium text-black mb-2"
+                  >
+                    Enter OTP
+                  </label>
 
-              <OTPInput
-                value={otp}
-                onChange={setOtp}
-                numInputs={6}
-                renderSeparator={<span>-</span>}
-                renderInput={(props) => <input {...props} />}
-                containerStyle={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-                inputStyle={{
-                  width: "2rem",
-                  height: "2rem",
-                  fontSize: "20px",
-                  borderRadius: "0.375rem",
-                  border: "1px solid rgba(0, 0, 0, 0.3)",
-                }}
-              />
-            </div>
+                  <OTPInput
+                    value={otp}
+                    onChange={setOtp}
+                    numInputs={6}
+                    renderSeparator={<span>-</span>}
+                    renderInput={(props) => <input {...props} />}
+                    containerStyle={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                    inputStyle={{
+                      width: "2rem",
+                      height: "2rem",
+                      fontSize: "20px",
+                      borderRadius: "0.375rem",
+                      border: "1px solid rgba(0, 0, 0, 0.3)",
+                    }}
+                  />
+                </div>
 
-            <div className="flex mt-4 gap-4">
-              <p className="text-gray-600">Didn't receive the OTP?</p>
-              <button className="text-black">Resend OTP in 00:30</button>
-            </div>
+                <div className="flex mt-4 gap-4">
+                  <p className="text-gray-600">Didn't receive the OTP?</p>
+
+                  {timerOn ? (
+                    <button
+                      className="text-black cursor-default"
+                      disabled={true}
+                    >
+                      Resend OTP in 00:
+                      {
+                        // If the timer is less than 10, then add a 0 before the timer
+                        timer < 10 ? `0${timer}` : timer
+                      }
+                    </button>
+                  ) : (
+                    <button className="text-black" onClick={sendOTP}>
+                      Resend OTP
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
 
             <div className="flex items-center justify-center my-6">
               <button
                 className={`text-black bg-accent py-2 text-xl font-bold text-center rounded-lg shadow-md shadow-black flex justify-center px-4 items-center gap-1
                   ${
-                    isLoading
+                    isLoading || !showOtpContainer
                       ? "cursor-not-allowed opacity-50"
                       : "opacity-100 px-6"
                   }
                 `}
                 onClick={handleLogin}
-                disabled={isLoading}
+                disabled={isLoading || !showOtpContainer}
               >
                 {isLoading ? "Logging in..." : "Login"}
               </button>
