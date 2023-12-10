@@ -21,20 +21,25 @@ export const MyProfile = () => {
   // console.log(profile)
   const setProfile = useProfileStore((state) => state.setProfile)
 
-  const [isEditingLocation, setIsEditingLocation] = useState(false)
-  const [locationData, setLocationData] = useState(
-    profile?.address || {
-      street: "",
-      city: "",
-      state: "",
-      country: "",
-      pincode: "",
+  const [isEditing, setIsEditing] = useState(false)
+  const [newProfileData, setNewProfileData] = useState(
+    profile || {
+      name: "",
+      email: "",
+      mobile: "",
+      address: {
+        street: "",
+        city: "",
+        state: "",
+        country: "",
+        pincode: "",
+      },
     }
   )
   const [isSaving, setIsSaving] = useState(false)
 
-  const handleLocationChange = (e) => {
-    setLocationData({ ...locationData, [e.target.name]: e.target.value })
+  const handleProfileDataChange = (e) => {
+    setNewProfileData({ ...newProfileData, [e.target.name]: e.target.value })
   }
 
   useEffect(() => {
@@ -43,32 +48,31 @@ export const MyProfile = () => {
     }
   }, [accessToken])
 
-  const editLocation = () => {
-    setIsEditingLocation(true)
+  const edit = () => {
+    setIsEditing(true)
   }
-  const saveLocation = async () => {
-    console.log(locationData)
+  const save = async () => {
+    // console.log(locationData)
+
+    if (newProfileData.mobile.length !== 10) {
+      toast.error("Please enter a valid mobile number")
+      return
+    }
 
     try {
       setIsSaving(true)
-      await axios.patch(
-        `${API_URL}/profile/edit`,
-        {
-          address: locationData,
+      await axios.patch(`${API_URL}/profile/edit`, newProfileData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      )
+      })
       setIsSaving(false)
-      setIsEditingLocation(false)
+      setIsEditing(false)
 
       toast.success("Location updated successfully")
 
       // Update the profile in the store
-      setProfile({ ...profile, address: locationData })
+      setProfile(newProfileData)
     } catch (error) {
       console.log(error)
       toast.error("Error updating location")
@@ -91,34 +95,11 @@ export const MyProfile = () => {
         </button>
       </div>
       <div className="container mx-auto p-8 bg-white rounded shadow-md">
-        <div className="text-center mb-8">
-          <img
-            // TODO: Change the default avatar to something else
-            src={profile?.avatar || "https://i.pravatar.cc/300"}
-            alt="Profile Picture"
-            className="rounded-full mx-auto mb-4"
-          />
-          <h1 className="text-2xl font-bold">{profile.name}</h1>
-          <p className="text-gray-600">Web Developer</p>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <h2 className="text-lg font-semibold mb-2">Contact Information</h2>
-
-            {profile?.email && <p>Email: {profile.email}</p>}
-
-            {profile?.mobile && <p>Phone: {profile.mobile}</p>}
-          </div>
-          <div>
-            <div className="flex gap-5 items-center mb-2">
-              <h2 className="text-lg font-semibold">Location</h2>
-              <span className="flex items-center space-x-3">
-                {
-                  // If user is editing, then show save button
-                  isEditingLocation ? (
-                    <>
-                      <button
-                        className={`  text-white px-4 py-1 rounded-md hover:bg-green-800                   
+        <div className="text-right space-x-3">
+          {isEditing ? (
+            <>
+              <button
+                className={`  text-white px-4 py-1 rounded-md hover:bg-green-800                   
 
                       ${
                         isSaving
@@ -127,37 +108,108 @@ export const MyProfile = () => {
                       }
 
                       `}
-                        onClick={saveLocation}
-                        disabled={isSaving}
-                      >
-                        {isSaving ? "Saving..." : "Save"}
-                      </button>
-                      <button
-                        className={`  px-4 py-1 rounded-md bg-blue-400              
+                onClick={save}
+                disabled={isSaving}
+              >
+                {isSaving ? "Saving..." : "Save"}
+              </button>
+              <button
+                className={`  px-4 py-1 rounded-md bg-blue-400              
                       `}
-                        onClick={() => setIsEditingLocation(false)}
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <MdEdit className="inline-block mr-1" />
-                      <button
-                        className="text-blue-500 hover:text-blue-600"
-                        onClick={editLocation}
-                      >
-                        Edit
-                      </button>
-                    </>
-                  )
-                }
-              </span>
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <button
+              className="text-blue-500 hover:text-blue-600"
+              onClick={edit}
+            >
+              Edit Profile
+            </button>
+          )}
+        </div>
+        <div className="text-center mb-8">
+          <img
+            // TODO: Change the default avatar to something else
+            src={profile?.avatar || "https://i.pravatar.cc/300"}
+            alt="Profile Picture"
+            className="rounded-full mx-auto mb-4"
+          />
+
+          {isEditing ? (
+            <div className="space-x-3 mb-2">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                className="border border-gray-300 p-2 rounded"
+                placeholder="Enter your name"
+                onChange={handleProfileDataChange}
+                value={newProfileData.name}
+              />
+            </div>
+          ) : (
+            <h1 className="text-2xl font-bold">{profile.name}</h1>
+          )}
+          <p className="text-gray-600">Web Developer</p>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <h2 className="text-lg font-semibold mb-2">Contact Information</h2>
+
+            {isEditing ? (
+              <div className="space-y-3 mb-2">
+                <div className="space-x-3">
+                  <label htmlFor="name">Email</label>
+                  <input
+                    type="text"
+                    name="email"
+                    id="email"
+                    className="border border-gray-300 p-2 rounded"
+                    placeholder="Enter your email"
+                    onChange={handleProfileDataChange}
+                    value={newProfileData.email}
+                  />
+                </div>
+                <div className="space-x-3">
+                  <label htmlFor="mobile">Mobile</label>
+                  <input
+                    type="number"
+                    name="mobile"
+                    id="mobile"
+                    className="border border-gray-300 p-2 rounded"
+                    placeholder="Enter your mobile number"
+                    onChange={handleProfileDataChange}
+                    value={newProfileData.mobile}
+                  />
+                </div>
+              </div>
+            ) : (
+              <>
+                {profile?.email ? (
+                  <p>Email: {profile.email}</p>
+                ) : (
+                  <p>No email found. Please add your email.</p>
+                )}
+                {profile?.mobile ? (
+                  <p>Phone: {profile.mobile}</p>
+                ) : (
+                  <p>No mobile number found. Please add.</p>
+                )}
+              </>
+            )}
+          </div>
+          <div>
+            <div className="flex gap-5 items-center mb-2">
+              <h2 className="text-lg font-semibold">Location</h2>
             </div>
 
             {
               // If user is editing, then show input field
-              isEditingLocation ? (
+              isEditing ? (
                 <>
                   <div>
                     <label htmlFor="street">Street</label>
@@ -167,8 +219,8 @@ export const MyProfile = () => {
                       id="street"
                       className="border border-gray-300 p-2 rounded w-full"
                       placeholder="Enter your street"
-                      onChange={handleLocationChange}
-                      value={locationData.street}
+                      onChange={handleProfileDataChange}
+                      value={newProfileData.address.street}
                     />
                   </div>
                   <div>
@@ -179,8 +231,8 @@ export const MyProfile = () => {
                       id="city"
                       className="border border-gray-300 p-2 rounded w-full"
                       placeholder="Enter your city"
-                      onChange={handleLocationChange}
-                      value={locationData.city}
+                      onChange={handleProfileDataChange}
+                      value={newProfileData.address.city}
                     />
                   </div>
                   <div>
@@ -191,8 +243,8 @@ export const MyProfile = () => {
                       id="state"
                       className="border border-gray-300 p-2 rounded w-full"
                       placeholder="Enter your state"
-                      onChange={handleLocationChange}
-                      value={locationData.state}
+                      onChange={handleProfileDataChange}
+                      value={newProfileData.address.state}
                     />
                   </div>
                   <div>
@@ -203,8 +255,8 @@ export const MyProfile = () => {
                       id="country"
                       className="border border-gray-300 p-2 rounded w-full"
                       placeholder="Enter your country"
-                      onChange={handleLocationChange}
-                      value={locationData.country}
+                      onChange={handleProfileDataChange}
+                      value={newProfileData.address.country}
                     />
                   </div>
                   <div>
@@ -215,8 +267,8 @@ export const MyProfile = () => {
                       id="pincode"
                       className="border border-gray-300 p-2 rounded w-full"
                       placeholder="Enter your pincode"
-                      onChange={handleLocationChange}
-                      value={locationData.pincode}
+                      onChange={handleProfileDataChange}
+                      value={newProfileData.address.pincode}
                     />
                   </div>
                 </>
