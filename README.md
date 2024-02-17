@@ -79,4 +79,14 @@ I plan to continue working on this project and add the following features:
 
 ## Completed Features:
 
-I will add the completed features here soon.
+- User Authentication
+  - Email and password based authentication
+  - Google based authentication
+  - OTP based authentication
+- Role based access
+- Product addition by artisans
+- Profiles for both customers and artisans
+- Edit profile
+- Product listing on the home page
+- Search and filter products based on category
+- Search products from the search bar (only works on the dispalyed products)  
