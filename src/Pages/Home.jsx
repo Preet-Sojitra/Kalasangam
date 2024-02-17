@@ -16,12 +16,26 @@ const Home = () => {
   //   useProductsStore.getState().fetchProducts()
   // }, [])
 
-  const allProducts = useProductsStore((state) => state.allProducts)
-  console.log(allProducts)
-  const setAccessToken = useAuthStore((state) => state.setAccessToken)
-  const setRole = useAuthStore((state) => state.setRole)
+  // const allProducts = useProductsStore((state) => state.allProducts)
+  // const fetchProducts = useProductsStore((state) => state.fetchProducts)
+  const {
+    allProducts,
+    fetchProducts,
+    allCategories,
+    selectedCategory,
+    setSelectedCategory,
+    fetchProductByCategory,
+    searchTerm,
+    // setSearchTerm,
+    searchProducts,
+    filteredProducts,
+  } = useProductsStore()
 
-  const [selectedCategory, setSelectedCategory] = useState("Popular")
+  // console.log(allProducts)
+  // ! If token wala not works, then uncomment the below lines.
+  // const setAccessToken = useAuthStore((state) => state.setAccessToken)
+  // const setRole = useAuthStore((state) => state.setRole)
+  const { setAccessToken, setRole } = useAuthStore()
 
   useEffect(() => {
     // When user lands on this page, if cookies are present, store them to the store and local storage.
@@ -39,11 +53,11 @@ const Home = () => {
       )
       const roleCookie = cookies.find((cookie) => cookie.includes("role"))
 
-      setAccessToken(accessTokenCookie.split("=")[1])
-      setRole(roleCookie.split("=")[1])
+      setAccessToken(accessTokenCookie?.split("=")[1])
+      setRole(roleCookie?.split("=")[1])
 
-      localStorage.setItem("accessToken", accessTokenCookie.split("=")[1])
-      localStorage.setItem("role", roleCookie.split("=")[1])
+      localStorage.setItem("accessToken", accessTokenCookie?.split("=")[1])
+      localStorage.setItem("role", roleCookie?.split("=")[1])
 
       // Now that we have stored the cookies in the store and local storage, we can delete the cookies.
       document.cookie =
@@ -51,6 +65,17 @@ const Home = () => {
       document.cookie = "role=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
     }
   }, [])
+
+  useEffect(() => {
+    if (selectedCategory !== "Uncategorized") {
+      fetchProductByCategory(selectedCategory)
+    } else {
+      fetchProducts()
+    }
+  }, [selectedCategory])
+
+  // The search functionality will only work on the products that are displayed on the screen and I am planning to dispaly only some products on the screen and as user scrolls, more products will be loaded. Thus, if the user searches for a product that is not displayed on the screen, it will not be found.
+  // TODO: I will need to implement a search functionality that will search through all the products through the database and not just the ones displayed on the screen.
 
   return (
     <>
@@ -76,6 +101,8 @@ const Home = () => {
                 className="pl-10 pr-4 py-2 bg-grey1 rounded-sm w-80 text-lg font-mono
               rounded-tr-md rounded-br-md focus:outline-none text-white
               "
+                value={searchTerm}
+                onChange={(e) => searchProducts(e.target.value)}
               />
             </span>
           </div>
@@ -85,7 +112,19 @@ const Home = () => {
             className="flex flex-row font-sans text-white space-x-4 justify-center items-center mt-7 text-xl
           pb-7"
           >
-            <button
+            {allCategories.map((category) => (
+              <button
+                key={category._id}
+                className={`rounded-md w-auto text-lg py-1 px-2 border-white ${
+                  selectedCategory === category.name ? "bg-accent" : ""
+                }`}
+                onClick={() => setSelectedCategory(category.name)}
+              >
+                {category.name}
+              </button>
+            ))}
+
+            {/* <button
               className={`rounded-md w-auto text-lg py-1 px-2 border-white ${
                 selectedCategory === "Popular" ? "bg-accent" : ""
               }`}
@@ -108,7 +147,7 @@ const Home = () => {
               onClick={() => setSelectedCategory("Pots")}
             >
               Pots
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="flex flex-row space-x-7 font-sans text-justify p-5 mt-4">
@@ -125,16 +164,26 @@ const Home = () => {
 
         <div className="p-4">
           <div className="flex overflow-x-auto whitespace-nowrap w-full gap-4">
-            {allProducts.map((product) => (
-              <ProductCard
-                key={product._id}
-                src={product.images[0].url}
-                name={product.name}
-                description={product.description}
-                price={product.price}
-                id={product._id}
-              />
-            ))}
+            {
+              // If there are no products, display a message.
+              filteredProducts.length === 0 && (
+                <p className="text-center text-black text-2xl">
+                  No products found
+                </p>
+              )
+            }
+
+            {filteredProducts &&
+              filteredProducts.map((product) => (
+                <ProductCard
+                  key={product._id}
+                  src={product.images[0].url}
+                  name={product.name}
+                  description={product.description}
+                  price={product.price}
+                  id={product._id}
+                />
+              ))}
           </div>
         </div>
       </div>
