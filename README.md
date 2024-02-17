@@ -18,7 +18,7 @@ The project is not deployed yet. I will deploy it soon or either I will provide 
 **Backend:** Express, Flask
 
 
-**Backend Repo:** [Link to backend repo](https://github.com/Preet-Sojitra/ssip23-backend)
+**Backend Repo:** [Link to backend repo](https://github.com/Preet-Sojitra/kalasangam-backend)
 
 ## Features:
 
