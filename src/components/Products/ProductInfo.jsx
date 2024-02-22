@@ -304,6 +304,7 @@ export const ProductInfo = ({
                   name: name,
                   description: description,
                   price: price,
+                  availableQuantity: availableQuantity,
                 }}
               >
                 Try Now

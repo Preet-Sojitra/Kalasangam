@@ -7,7 +7,7 @@ import { ProductInfo } from "../components/Products/ProductInfo"
 const AR = () => {
   const location = useLocation()
   const { state } = location
-  // console.log(state)
+  console.log(state)
 
   // const params = useParams()
   // const { productId } = params
@@ -23,13 +23,12 @@ const AR = () => {
             navigate(-1) // Go back to previous page
           }}
         />
-        <img src={account} alt="Account" className="ml-auto" />
       </div>
 
       <div className="w-screen">
         <model-viewer
           alt="Neil Armstrong's Spacesuit from the Smithsonian Digitization Programs Office and National Air and Space Museum"
-          src={`/models/ar-${state.id}.glb`}
+          src={`/models/ar-65759f90269186fc102b4e30.glb`}
           ar
           shadow-intensity="1"
           camera-controls
@@ -45,6 +44,7 @@ const AR = () => {
         description={state.description}
         price={state.price}
         showTryButton={false}
+        availableQuantity={state.availableQuantity}
       />
     </div>
   )

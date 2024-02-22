@@ -40,7 +40,7 @@ function App() {
     <Router>
       <CartProvider>
         <ScrollToTop />
-        <Test />
+        {/* <Test /> */}
         <Routes>
           <Route path="/" element={<Explore />} />
           <Route path="/" element={<Main />}>
