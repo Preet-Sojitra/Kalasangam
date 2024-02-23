@@ -73,16 +73,33 @@ export const useProductsStore = create((set, get) => {
     set({ filteredProducts: filteredProducts })
   }
 
+  const fetchSingleProduct = async (productId) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/products/one?id=${productId}`
+      )
+      const { data } = response
+      console.log(data)
+
+      set({ singleProduct: data.productData })
+    } catch (error) {
+      console.log("Error fetching single product")
+      console.log(error)
+    }
+  }
+
   return {
     allProducts: [],
     allCategories: [],
     selectedCategory: "Uncategorized",
     searchTerm: "",
     filteredProducts: [],
+    singleProduct: {},
     searchProducts: (searchTerm) => searchProducts(searchTerm, get()),
     setSelectedCategory: setSelectedCategory,
     fetchProducts: fetchProducts,
     fetchCategories: fetchCategories,
     fetchProductByCategory: fetchProductByCategory,
+    fetchSingleProduct: fetchSingleProduct,
   }
 })

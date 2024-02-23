@@ -49,6 +49,9 @@ function App() {
             <Route path="product/:productId" element={<ProductDetail />} />
             <Route path="product/:productId/ar" element={<AR />} />
           </Route>
+
+          <Route path="/buynow/:productId" element={<BuyNow />} />
+
           {/* <Route path="/all-products" element={<AllProducts />} /> */}
           {/* <Route path="/product/:productId" element={<ProductDetail />} /> */}
           {/* <Route path="/product/:productId/ar" element={<AR />} /> */}
@@ -62,7 +65,6 @@ function App() {
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/account" element={<Account />} />
           <Route path="/artisian/addproduct" element={<AddProduct />} />
-          <Route path="/buynow" element={<BuyNow />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/auth/get-started/login" element={<GetStartedLogin />} />
           <Route

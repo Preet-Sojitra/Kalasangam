@@ -351,12 +351,8 @@ export const ProductInfo = ({
           </div>
           <div className="flex flex-row space-x-8 pb-16">
             <Link
-              to="/buynow"
+              to={`/buynow/${productId}`}
               state={{
-                id: id,
-                name: name,
-                description: description,
-                price: price,
                 quantity: quantity,
               }}
             >
