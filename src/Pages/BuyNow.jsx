@@ -22,27 +22,8 @@ const BuyNow = () => {
     fetchSingleProduct(productId)
   }, [])
 
-  console.log("singleProduct")
-  console.log(singleProduct)
-
-  // const [product, setProduct] = useState(null)
-
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${API_URL}/products/one?id=${productId}`
-  //       )
-  //       // console.log(response.data)
-  //       setProduct(response.data.productData)
-  //     } catch (error) {
-  //       console.error("Error fetching product:", error.message)
-  //     }
-  //   }
-  //   fetchProduct()
-  // }, [])
-
-  // console.log(product)
+  // console.log("singleProduct")
+  // console.log(singleProduct)
 
   const handleStripePayment = async () => {
     try {

@@ -94,7 +94,7 @@ export const useProductsStore = create((set, get) => {
     selectedCategory: "Uncategorized",
     searchTerm: "",
     filteredProducts: [],
-    singleProduct: {},
+    singleProduct: undefined,
     searchProducts: (searchTerm) => searchProducts(searchTerm, get()),
     setSelectedCategory: setSelectedCategory,
     fetchProducts: fetchProducts,

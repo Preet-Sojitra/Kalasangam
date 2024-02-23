@@ -181,6 +181,7 @@ import { BsCartFill } from "react-icons/bs"
 import { useCart } from "../CartContext"
 import axios from "axios"
 import toast, { Toaster } from "react-hot-toast"
+import { useAuthStore } from "../../store/authStore"
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -200,21 +201,33 @@ export const ProductInfo = ({
   const params = useParams()
   const { productId } = params
 
-  useEffect(() => {
-    // set from cookie
-    const cookie = document.cookie
-      .split(";")
-      .map((cookie) => cookie.split("="))
-      .map((cookie) => ({ key: cookie[0].trim(), value: cookie[1] }))
-    // console.log(cookie)
+  // const { isUserLoggedIn, checkIsUserLoggedIn } = useAuthStore()
+  // console.log(isUserLoggedIn ? "User is Logged in" : "User is Not logged in")
 
-    const customerCookie = cookie.find((cookie) => cookie.key === "userId")
-    // console.log(customerCookie)
+  // useEffect(() => {
+  //   checkIsUserLoggedIn()
+  // }, [isUserLoggedIn])
 
-    if (customerCookie) {
-      setCustomerId(customerCookie.value)
-    }
-  }, [])
+  const { accessToken } = useAuthStore()
+  console.log("accessToken inside product info")
+  console.log(accessToken)
+
+  //TODO: CHECK IF THIS IS REQUIRED OR NOT
+  // useEffect(() => {
+  //   // set from cookie
+  //   const cookie = document.cookie
+  //     .split(";")
+  //     .map((cookie) => cookie.split("="))
+  //     .map((cookie) => ({ key: cookie[0].trim(), value: cookie[1] }))
+  //   // console.log(cookie)
+
+  //   const customerCookie = cookie.find((cookie) => cookie.key === "userId")
+  //   // console.log(customerCookie)
+
+  //   if (customerCookie) {
+  //     setCustomerId(customerCookie.value)
+  //   }
+  // }, [])
 
   const [quantity, setQuantity] = useState(1)
   // const { dispatch } = useCart()
@@ -350,17 +363,35 @@ export const ProductInfo = ({
             </h1>
           </div>
           <div className="flex flex-row space-x-8 pb-16">
-            <Link
-              to={`/buynow/${productId}`}
-              state={{
-                quantity: quantity,
-              }}
-            >
-              <div className="bg-accent text-xl font-medium rounded-md p-2 flex items-center gap-2">
-                <BsCartFill />
-                Order Now
-              </div>
-            </Link>
+            {accessToken ? (
+              // IF USER IS LOGGED IN
+              <Link
+                to={`/buynow/${productId}`}
+                state={{
+                  quantity: quantity,
+                }}
+              >
+                <div className="bg-accent text-xl font-medium rounded-md p-2 flex items-center gap-2">
+                  <BsCartFill />
+                  Order Now
+                </div>
+              </Link>
+            ) : (
+              // IF USER IS NOT LOGGED IN
+              <Link
+                to="/auth/get-started/login"
+                //TODO: TACKLE THIS LATER
+                // state={{
+                //   from: `/buynow/${productId}`,
+                //   quantity: quantity,
+                // }}
+              >
+                <div className="bg-accent text-xl font-medium rounded-md p-2 flex items-center gap-2">
+                  <BsCartFill />
+                  Order Now
+                </div>
+              </Link>
+            )}
 
             <button
               className={`bg-accent  text-xl font-medium rounded-md p-2 flex items-center gap-2
