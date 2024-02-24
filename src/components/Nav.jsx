@@ -20,13 +20,13 @@ export const Nav = () => {
   //   }
   // }, [])
 
-  const accssToken = useAuthStore((state) => state.accessToken)
-  const setAccssToken = useAuthStore((state) => state.setAccessToken)
+  const accessToken = useAuthStore((state) => state.accessToken)
+  // const setAccssToken = useAuthStore((state) => state.setAccessToken)
 
   const role = useAuthStore((state) => state.role)
-  const setRole = useAuthStore((state) => state.setRole)
+  // const setRole = useAuthStore((state) => state.setRole)
 
-  console.log(accssToken)
+  // console.log(accssToken)
   // console.log(role)
 
   // useEffect(() => {
@@ -71,7 +71,7 @@ export const Nav = () => {
           </div>
         </Link>
 
-        <Link to={accssToken ? "/myprofile" : "/auth/get-started/login"}>
+        <Link to={accessToken ? "/myprofile" : "/auth/get-started/login"}>
           <div className="flex flex-col items-center gap-[1px] cursor-pointer">
             <VscAccount
               className={`text-[22px] ${
@@ -85,7 +85,7 @@ export const Nav = () => {
             >
               {
                 // If accessToken is present then show profile else show login
-                accssToken ? "profile" : "login"
+                accessToken ? "profile" : "login"
               }
             </h1>
           </div>

@@ -44,20 +44,33 @@ const Home = () => {
 
     // console.log(document.cookie)
     if (document.cookie) {
-      console.log("Cookies are present")
+      // console.log("Cookies are present")
       const cookies = document.cookie.split("; ")
-      console.log(cookies)
+      // console.log(cookies)
 
       const accessTokenCookie = cookies.find((cookie) =>
         cookie.includes("accessToken")
       )
+
+      // console.log("accessTokenCookie from Home.jsx")
+      // console.log(accessTokenCookie)
+
       const roleCookie = cookies.find((cookie) => cookie.includes("role"))
+      // console.log("roleCookie from Home.jsx")
+      // console.log(roleCookie)
 
-      setAccessToken(accessTokenCookie?.split("=")[1])
-      setRole(roleCookie?.split("=")[1])
+      if (accessTokenCookie && roleCookie) {
+        setAccessToken(accessTokenCookie?.split("=")[1])
+        setRole(roleCookie?.split("=")[1])
 
-      localStorage.setItem("accessToken", accessTokenCookie?.split("=")[1])
-      localStorage.setItem("role", roleCookie?.split("=")[1])
+        localStorage.setItem("accessToken", accessTokenCookie?.split("=")[1])
+        localStorage.setItem("role", roleCookie?.split("=")[1])
+      }
+
+      // setAccessToken(accessTokenCookie?.split("=")[1])
+      // setRole(roleCookie?.split("=")[1])
+      // localStorage.setItem("accessToken", accessTokenCookie?.split("=")[1])
+      // localStorage.setItem("role", roleCookie?.split("=")[1])
 
       // Now that we have stored the cookies in the store and local storage, we can delete the cookies.
       document.cookie =
