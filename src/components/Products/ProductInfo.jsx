@@ -229,7 +229,12 @@ export const ProductInfo = ({
   //   }
   // }, [])
 
-  const [quantity, setQuantity] = useState(1)
+  const [isProductOutOfStock, setIsProductOutOfStock] = useState(
+    availableQuantity === 0
+  )
+  console.log("isProductOutOfStock", isProductOutOfStock)
+
+  const [quantity, setQuantity] = useState(isProductOutOfStock ? 0 : 1)
   // const { dispatch } = useCart()
   const incrementQuantity = () => {
     console.log("increment")
@@ -325,12 +330,27 @@ export const ProductInfo = ({
             )}
           </div>
           <p className="text-xl font-sans mb-2 p-2">{description}</p>
+
+          {isProductOutOfStock && (
+            <p className="text-red-500 font-medium text-2xl">
+              Product is out of stock
+            </p>
+          )}
+
           <div className="flex items-center space-x-30 text-2xl mt-4">
             <p className="mr-4 flex">Quantity</p>
             <div className="flex gap-1">
               <button
                 onClick={decrementQuantity}
-                className="bg-gray-300 text-gray-700 px-[14px] py-1 rounded-full focus:outline-none"
+                className={`bg-gray-300 text-gray-700 px-[14px] py-1 rounded-full focus:outline-none
+                ${
+                  isProductOutOfStock || quantity === 1
+                    ? "opacity-70 cursor-not-allowed"
+                    : ""
+                }
+                
+                `}
+                disabled={isProductOutOfStock || quantity === 1}
               >
                 -
               </button>
@@ -339,9 +359,13 @@ export const ProductInfo = ({
               <button
                 onClick={incrementQuantity}
                 className={`bg-gray-300 text-gray-700  px-[14px] py-1 rounded-full focus:outline-none
-                ${selectedMore ? "opacity-70 cursor-not-allowed" : ""}
+                ${
+                  selectedMore || isProductOutOfStock
+                    ? "opacity-70 cursor-not-allowed"
+                    : ""
+                }
                 `}
-                disabled={selectedMore}
+                disabled={selectedMore || isProductOutOfStock}
               >
                 +
               </button>
@@ -362,16 +386,21 @@ export const ProductInfo = ({
               </span>
             </h1>
           </div>
+
           <div className="flex flex-row space-x-8 pb-16">
             {accessToken ? (
               // IF USER IS LOGGED IN
               <Link
-                to={`/buynow/${productId}`}
+                to={isProductOutOfStock ? "#" : `/buynow/${productId}`}
                 state={{
                   quantity: quantity,
                 }}
               >
-                <div className="bg-accent text-xl font-medium rounded-md p-2 flex items-center gap-2">
+                <div
+                  className={`bg-accent text-xl font-medium rounded-md p-2 flex items-center gap-2
+                ${isProductOutOfStock ? "opacity-70 cursor-not-allowed" : ""}
+                `}
+                >
                   <BsCartFill />
                   Order Now
                 </div>
@@ -379,14 +408,18 @@ export const ProductInfo = ({
             ) : (
               // IF USER IS NOT LOGGED IN
               <Link
-                to="/auth/get-started/login"
+                to={isProductOutOfStock ? "#" : "/auth/get-started/login"}
                 //TODO: TACKLE THIS LATER
                 // state={{
                 //   from: `/buynow/${productId}`,
                 //   quantity: quantity,
                 // }}
               >
-                <div className="bg-accent text-xl font-medium rounded-md p-2 flex items-center gap-2">
+                <div
+                  className={`bg-accent text-xl font-medium rounded-md p-2 flex items-center gap-2
+                ${isProductOutOfStock ? "opacity-70 cursor-not-allowed" : ""}
+                `}
+                >
                   <BsCartFill />
                   Order Now
                 </div>
@@ -397,10 +430,19 @@ export const ProductInfo = ({
               className={`bg-accent  text-xl font-medium rounded-md p-2 flex items-center gap-2
               ${isLoading ? "opacity-50 cursor-not-allowed" : ""}
               ${isAddedToCart ? "opacity-70 cursor-not-allowed" : ""}
-              ${selectedMore ? "opacity-70 cursor-not-allowed" : ""}
+              ${
+                selectedMore || isProductOutOfStock
+                  ? "opacity-70 cursor-not-allowed"
+                  : ""
+              }
               `}
               onClick={addToCart}
-              disabled={isLoading || isAddedToCart || selectedMore}
+              disabled={
+                isLoading ||
+                isAddedToCart ||
+                selectedMore ||
+                isProductOutOfStock
+              }
             >
               <BsCartFill />
               {isLoading
