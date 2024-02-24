@@ -5,7 +5,7 @@ export const useProductsStore = create((set, get) => {
   const API_URL = import.meta.env.VITE_API_URL
   const fetchProducts = async () => {
     try {
-      console.log("Fetching all products")
+      // console.log("Fetching all products")
       const response = await axios.get(`${API_URL}/products/all`)
       const { data } = response
       // console.log(data)
@@ -21,7 +21,7 @@ export const useProductsStore = create((set, get) => {
 
   const fetchCategories = async () => {
     try {
-      console.log("Fetching all categories")
+      // console.log("Fetching all categories")
       const response = await axios.get(`${API_URL}/products/categories/all`)
       const { data } = response
       // console.log(data)

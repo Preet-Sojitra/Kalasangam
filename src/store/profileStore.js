@@ -41,7 +41,7 @@ export const useProfileStore = create((set) => {
       console.log(error)
     }
   }
-  fetchProfile()
+  // fetchProfile()
 
   return {
     profile: {},

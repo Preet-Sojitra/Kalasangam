@@ -33,6 +33,7 @@ import { PaymentSuccess } from "./components/PaymentSuccess"
 import { ViewOrders } from "./Pages/Dashboard/ViewOrders"
 import OrderTable from "./components/Dashboard/ViewOrders/OederTable"
 import { MyProfile } from "./Pages/MyProfile"
+import { StripeContainer } from "./components/Stripe/StripeContainer"
 // import Profile from "./Pages/Profile"
 
 function App() {
@@ -51,6 +52,10 @@ function App() {
           </Route>
 
           <Route path="/buynow/:productId" element={<BuyNow />} />
+          <Route
+            path="/buynow/:productId/checkout"
+            element={<StripeContainer />}
+          />
 
           {/* <Route path="/all-products" element={<AllProducts />} /> */}
           {/* <Route path="/product/:productId" element={<ProductDetail />} /> */}
@@ -74,7 +79,15 @@ function App() {
           {/* <Route path="/profilepage" element={<Profile />} /> */}
           <Route path="/artisians/inventory" element={<Inventory />} />
           <Route path="/artisian/editproduct" element={<EditProduct />} />
-          <Route path="/success" element={<PaymentSuccess />} />
+          <Route path="/payment/success" element={<PaymentSuccess />} />
+          <Route
+            path="/payment/cancel"
+            element={
+              <>
+                <h1>Payment Canceled</h1>
+              </>
+            }
+          />
           <Route path="/vieworderss" element={<OrderTable />} />
           <Route path="/artisian/vieworders" element={<ViewOrders />} />
 
