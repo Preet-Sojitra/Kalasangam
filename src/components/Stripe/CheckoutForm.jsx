@@ -1,5 +1,10 @@
-import React from "react"
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
+import React, { useState } from "react"
+import {
+  CardElement,
+  useStripe,
+  useElements,
+  PaymentElement,
+} from "@stripe/react-stripe-js"
 import axios from "axios"
 import { useParams, useLocation } from "react-router"
 import { useAuthStore } from "../../store/authStore"
@@ -24,9 +29,15 @@ export const CheckoutForm = () => {
 
   const stripe = useStripe()
   const elements = useElements()
+  console.log(stripe, elements)
+
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const handleStripePayment = async (e) => {
     e.preventDefault()
+
+    setLoading(true)
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
@@ -57,29 +68,65 @@ export const CheckoutForm = () => {
             },
           }
         )
-
         console.log(res.data)
-
         // Redirect to payment success page
-
         if (res.status === 200) {
           console.log("Payment successful")
           navigate("/payment/success")
         }
       } catch (error) {
         console.log(error)
+        setError(error.response.data.message)
       }
     } else {
       console.log(error)
+      setError(error.message)
     }
+    setLoading(false)
   }
 
   return (
-    <>
-      <form onSubmit={handleStripePayment}>
-        <CardElement />
-        <button type="submit">Pay</button>
-      </form>
-    </>
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-96">
+        <h1 className="text-3xl font-bold text-center mb-8">Checkout</h1>
+        <form onSubmit={handleStripePayment}>
+          <div className="mb-4">
+            <label
+              className="block text-sm font-bold mb-2"
+              htmlFor="card-element"
+            >
+              Card Details
+            </label>
+            <CardElement
+              id="card-element"
+              options={{
+                style: {
+                  base: {
+                    fontSize: "16px",
+                    color: "#424770",
+                    "::placeholder": {
+                      color: "#aab7c4",
+                    },
+                  },
+                  invalid: {
+                    color: "#9e2146",
+                  },
+                },
+              }}
+            />
+          </div>
+          <button
+            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            type="submit"
+            disabled={!stripe || loading}
+          >
+            {loading ? "Processing..." : "Pay"}
+          </button>
+          {error && (
+            <div className="text-red-500 text-sm mt-4 text-center">{error}</div>
+          )}
+        </form>
+      </div>
+    </div>
   )
 }

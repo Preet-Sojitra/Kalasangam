@@ -3,8 +3,8 @@ import { Link } from "react-router-dom"
 
 export const PaymentSuccess = () => {
   return (
-    <div className="bg-gray-100 h-screen">
-      <div className="bg-white p-6  md:mx-auto">
+    <div className="bg-white h-screen flex items-center w-full">
+      <div className=" p-6  md:mx-auto w-full h-h">
         <svg
           viewBox="0 0 24 24"
           className="text-green-600 w-16 h-16 mx-auto my-6"
@@ -27,7 +27,7 @@ export const PaymentSuccess = () => {
               to="/home"
               className="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3"
             >
-              GO BACK
+              Continue Shopping
             </Link>
           </div>
         </div>
