@@ -35,6 +35,7 @@ import OrderTable from "./components/Dashboard/ViewOrders/OederTable"
 import { MyProfile } from "./Pages/MyProfile"
 import { StripeContainer } from "./components/Stripe/StripeContainer"
 // import Profile from "./Pages/Profile"
+import { Orders } from "./Pages/User/Orders"
 
 function App() {
   return (
@@ -57,13 +58,27 @@ function App() {
             element={<StripeContainer />}
           />
 
+          <Route path="/dashboard">
+            <Route path="orders" element={<Orders />} />
+            {/* // TODO: Later */}
+            <Route
+              path="orders/:orderId"
+              element={
+                <>
+                  <h1>Order Detail</h1>
+                  <p>Coming soon</p>
+                </>
+              }
+            />
+          </Route>
+
           {/* <Route path="/all-products" element={<AllProducts />} /> */}
           {/* <Route path="/product/:productId" element={<ProductDetail />} /> */}
           {/* <Route path="/product/:productId/ar" element={<AR />} /> */}
-          <Route path="/dashboard" element={<DashBoardLayout />}>
+          {/* <Route path="/dashboard" element={<DashBoardLayout />}>
             <Route path="analytics" element={<Analytics />} />
-            {/* <Route path="addproduct" element={<AddProduct />} /> */}
-          </Route>
+            <Route path="addproduct" element={<AddProduct />} />
+          </Route> */}
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/login/sms" element={<LoginWithOTP />} />
           {/* <Route path="/auth/signup" element={<ArtisanSignup />} /> */}

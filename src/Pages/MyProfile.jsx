@@ -17,7 +17,7 @@ export const MyProfile = () => {
   const accessToken = useAuthStore((state) => state.accessToken)
   const role = useAuthStore((state) => state.role)
 
-  const profile = useProfileStore((state) => state.profile)
+  const { profile, fetchProfile } = useProfileStore()
   // console.log(profile)
   const setProfile = useProfileStore((state) => state.setProfile)
 
@@ -46,6 +46,8 @@ export const MyProfile = () => {
     if (!accessToken) {
       navigate("/auth/get-started/login")
     }
+
+    fetchProfile()
   }, [accessToken])
 
   const edit = () => {
@@ -313,6 +315,27 @@ export const MyProfile = () => {
             </button>
           </Link>
         </>
+      )}
+
+      {/* If role is customer, then we show one navbar */}
+
+      {role === "customer" && (
+        <div>
+          <Link to="/home">
+            <button className="font-bold py-2 px-4 rounded">Home</button>
+          </Link>
+          <Link to="/dashboard/orders">
+            <button className="font-bold py-2 px-4 rounded">Orders</button>
+          </Link>
+          <Link to="/dashboard/cart">
+            <button className="font-bold py-2 px-4 rounded">Cart</button>
+          </Link>
+          <Link to="/dashboard/notifications">
+            <button className="font-bold py-2 px-4 rounded">
+              Notifications
+            </button>
+          </Link>
+        </div>
       )}
     </div>
   )
