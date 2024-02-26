@@ -37,6 +37,7 @@ import { StripeContainer } from "./components/Stripe/StripeContainer"
 // import Profile from "./Pages/Profile"
 import { Orders } from "./Pages/User/Orders"
 import { ArtisanOrders } from "./Pages/Dashboard/ArtisanOrders"
+import { OrderDetail } from "./Pages/Dashboard/OrderDetail"
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
           <Route path="/dashboard" element={<DashBoardLayout />}>
             <Route path="analytics" element={<Analytics />} />
             <Route path="allorders" element={<ArtisanOrders />} />
+            <Route path="allorders/:orderId" element={<OrderDetail />} />
           </Route>
 
           {/* <Route path="/all-products" element={<AllProducts />} /> */}

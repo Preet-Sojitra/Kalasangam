@@ -1,5 +1,6 @@
 import React, { useEffect } from "react"
 import { useOrderStore } from "../../store/orderStore"
+import { Link } from "react-router-dom"
 
 export const ArtisanOrders = () => {
   const { artisanOrders, fetchArtisanOrders } = useOrderStore()
@@ -32,9 +33,11 @@ export const ArtisanOrders = () => {
           <tbody className="text-center">
             {artisanOrders.map((order) => (
               <tr key={order._id} className="border">
-                <td className="border px-4 py-2">
-                  {order._id.slice(0, 5) + "..." + order._id.slice(-5)}
-                </td>
+                <Link to={`/dashboard/allorders/${order._id}`}>
+                  <td className="border px-4 py-2">
+                    {order._id.slice(0, 5) + "..." + order._id.slice(-5)}
+                  </td>
+                </Link>
                 <td className="border px-4 py-2">
                   {new Date(order.createdAt).toLocaleDateString()}
                 </td>

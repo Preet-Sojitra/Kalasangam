@@ -31,7 +31,7 @@ export const useOrderStore = create((set, get) => {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      console.log(res.data)
+      // console.log(res.data)
       const { data } = res
       set({ artisanOrders: data })
     } catch (error) {
@@ -40,10 +40,28 @@ export const useOrderStore = create((set, get) => {
     }
   }
 
+  const fetchOrder = async (orderId) => {
+    try {
+      const res = await axios.get(`${API_URL}/orders/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      // console.log(res.data)
+      const { data } = res
+      set({ order: data })
+    } catch (error) {
+      console.log("Error fetching order")
+      console.log(error)
+    }
+  }
+
   return {
     myOrders: [],
     artisanOrders: [],
+    order: null,
     fetchMyOrders,
     fetchArtisanOrders,
+    fetchOrder,
   }
 })
