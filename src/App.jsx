@@ -36,6 +36,7 @@ import { MyProfile } from "./Pages/MyProfile"
 import { StripeContainer } from "./components/Stripe/StripeContainer"
 // import Profile from "./Pages/Profile"
 import { Orders } from "./Pages/User/Orders"
+import { ArtisanOrders } from "./Pages/Dashboard/ArtisanOrders"
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
             element={<StripeContainer />}
           />
 
+          {/* For USER */}
           <Route path="/dashboard">
             <Route path="orders" element={<Orders />} />
             {/* // TODO: Later */}
@@ -70,6 +72,14 @@ function App() {
                 </>
               }
             />
+          </Route>
+
+          {/* //TODO: need to sort the routes for USER And Artisan Dashboard */}
+
+          {/* For ARTISANS */}
+          <Route path="/dashboard" element={<DashBoardLayout />}>
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="allorders" element={<ArtisanOrders />} />
           </Route>
 
           {/* <Route path="/all-products" element={<AllProducts />} /> */}
@@ -103,8 +113,8 @@ function App() {
               </>
             }
           />
-          <Route path="/vieworderss" element={<OrderTable />} />
-          <Route path="/artisian/vieworders" element={<ViewOrders />} />
+          {/* <Route path="/vieworderss" element={<OrderTable />} /> */}
+          {/* <Route path="/artisian/vieworders" element={<ViewOrders />} /> */}
 
           <Route path="/myprofile" element={<MyProfile />} />
         </Routes>
