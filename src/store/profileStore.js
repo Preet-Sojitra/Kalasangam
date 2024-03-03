@@ -33,7 +33,7 @@ export const useProfileStore = create((set) => {
       const {
         data: { user },
       } = response
-      //   console.log(response.data)
+      console.log(response.data)
 
       set({ profile: user })
     } catch (error) {

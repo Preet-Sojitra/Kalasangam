@@ -62,17 +62,11 @@ function App() {
 
           {/* For USER */}
           <Route path="/dashboard">
+            {/* // TODO: can /dashboard/orders and /dashboard/allorders be merged since we are showing order details only but layout is different. So it can me merged by showing more details on Artisan Order page is user is artisan else less detail. Can be done via extracting into one component, and in that component check, whether logged in user is artisan or user, then render accordintly.
+             * TACKLE LATER
+             */}
             <Route path="orders" element={<Orders />} />
-            {/* // TODO: Later */}
-            <Route
-              path="orders/:orderId"
-              element={
-                <>
-                  <h1>Order Detail</h1>
-                  <p>Coming soon</p>
-                </>
-              }
-            />
+            <Route path="orders/:orderId" element={<OrderDetail />} />
           </Route>
 
           {/* //TODO: need to sort the routes for USER And Artisan Dashboard */}

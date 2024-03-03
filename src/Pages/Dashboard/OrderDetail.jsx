@@ -5,14 +5,17 @@ import { useParams } from "react-router-dom"
 import axios from "axios"
 import toast, { Toaster } from "react-hot-toast"
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router"
 
 const API_URL = import.meta.env.VITE_API_URL
 
 export const OrderDetail = () => {
+  const navigate = useNavigate()
+
   const { orderId } = useParams()
 
   const { order, fetchOrder, setOrder } = useOrderStore()
-  const { accessToken } = useAuthStore()
+  const { accessToken, role } = useAuthStore()
 
   const [selectedStatus, setSelectedStatus] = useState("")
   const possibleStatus = [
@@ -28,15 +31,19 @@ export const OrderDetail = () => {
     if (orderId) {
       fetchOrder(orderId)
 
-      setSelectedStatus(order?.status)
+      if (role != "customer") {
+        setSelectedStatus(order?.status)
+      }
     }
   }, [])
 
-  useEffect(() => {
-    if (order) {
-      setIndexOftemp(possibleStatus.indexOf(order.status))
-    }
-  }, [order])
+  if (role != "customer") {
+    useEffect(() => {
+      if (order) {
+        setIndexOftemp(possibleStatus.indexOf(order.status))
+      }
+    }, [order])
+  }
 
   const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -88,7 +95,8 @@ export const OrderDetail = () => {
   return (
     <div className="container mx-auto p-8">
       <p>
-        <Link to="/dashboard/allorders">Back to All Orders</Link>
+        {/* //TODO: IF both routes for user dashboard and artisan dashboard for orders are merged, then remove this code and hardcode the link */}
+        <button onClick={() => navigate(-1)}>Back to All Orders</button>
       </p>
 
       <Toaster />
@@ -115,26 +123,32 @@ export const OrderDetail = () => {
             <div className="md:w-1/2 mt-4 md:mt-0">
               <h1 className="text-xl font-bold mb-2">Status:</h1>
               <div className="relative">
-                <select
-                  id="status"
-                  name="status"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  value={selectedStatus}
-                  onChange={handleStatusChange}
-                >
-                  <option value="PLACED" disabled={indexOftemp > 0}>
-                    Placed
-                  </option>
-                  <option value="IN TRANSIT" disabled={indexOftemp > 1}>
-                    In Transit
-                  </option>
-                  <option value="OUT FOR DELIVERY" disabled={indexOftemp > 2}>
-                    Out for Delivery
-                  </option>
-                  <option value="DELIVERED" disabled={indexOftemp > 3}>
-                    Delivered
-                  </option>
-                </select>
+                {role === "customer" ? (
+                  <>
+                    <p className="text-lg">{order.status}</p>
+                  </>
+                ) : (
+                  <select
+                    id="status"
+                    name="status"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    value={selectedStatus}
+                    onChange={handleStatusChange}
+                  >
+                    <option value="PLACED" disabled={indexOftemp > 0}>
+                      Placed
+                    </option>
+                    <option value="IN TRANSIT" disabled={indexOftemp > 1}>
+                      In Transit
+                    </option>
+                    <option value="OUT FOR DELIVERY" disabled={indexOftemp > 2}>
+                      Out for Delivery
+                    </option>
+                    <option value="DELIVERED" disabled={indexOftemp > 3}>
+                      Delivered
+                    </option>
+                  </select>
+                )}
               </div>
             </div>
           </div>
@@ -144,6 +158,7 @@ export const OrderDetail = () => {
               <button
                 className="bg-red-500 text-white  px-4 py-2 rounded-md  md:mt-0"
                 onClick={handleCancel}
+                disabled={isSaving || role === "customer"}
               >
                 Cancel
               </button>
@@ -151,6 +166,7 @@ export const OrderDetail = () => {
               <button
                 className="bg-green-500 text-white  px-4 py-2 rounded-md  md:mt-0"
                 onClick={handleSave}
+                disabled={isSaving || role === "customer"}
               >
                 {isSaving ? "Saving..." : "Save"}
               </button>

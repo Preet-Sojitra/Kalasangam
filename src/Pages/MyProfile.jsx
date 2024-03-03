@@ -48,6 +48,10 @@ export const MyProfile = () => {
     }
 
     fetchProfile()
+
+    return () => {
+      setProfile({})
+    }
   }, [accessToken])
 
   const edit = () => {
