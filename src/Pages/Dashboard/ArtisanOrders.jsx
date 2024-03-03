@@ -33,11 +33,11 @@ export const ArtisanOrders = () => {
           <tbody className="text-center">
             {artisanOrders.map((order) => (
               <tr key={order._id} className="border">
-                <Link to={`/dashboard/allorders/${order._id}`}>
-                  <td className="border px-4 py-2">
+                <td className="border px-4 py-2">
+                  <Link to={`/dashboard/allorders/${order._id}`}>
                     {order._id.slice(0, 5) + "..." + order._id.slice(-5)}
-                  </td>
-                </Link>
+                  </Link>
+                </td>
                 <td className="border px-4 py-2">
                   {new Date(order.createdAt).toLocaleDateString()}
                 </td>

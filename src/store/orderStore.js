@@ -56,6 +56,10 @@ export const useOrderStore = create((set, get) => {
     }
   }
 
+  const setOrder = (order) => {
+    set({ order })
+  }
+
   return {
     myOrders: [],
     artisanOrders: [],
@@ -63,5 +67,6 @@ export const useOrderStore = create((set, get) => {
     fetchMyOrders,
     fetchArtisanOrders,
     fetchOrder,
+    setOrder,
   }
 })

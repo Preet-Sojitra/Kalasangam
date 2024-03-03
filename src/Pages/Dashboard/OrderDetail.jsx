@@ -1,15 +1,85 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useOrderStore } from "../../store/orderStore"
+import { useAuthStore } from "../../store/authStore"
 import { useParams } from "react-router-dom"
+import axios from "axios"
+import toast, { Toaster } from "react-hot-toast"
+import { Link } from "react-router-dom"
+
+const API_URL = import.meta.env.VITE_API_URL
 
 export const OrderDetail = () => {
   const { orderId } = useParams()
 
-  const { order, fetchOrder } = useOrderStore()
+  const { order, fetchOrder, setOrder } = useOrderStore()
+  const { accessToken } = useAuthStore()
+
+  const [selectedStatus, setSelectedStatus] = useState("")
+  const possibleStatus = [
+    "PLACED",
+    "IN TRANSIT",
+    "OUT FOR DELIVERY",
+    "DELIVERED",
+  ]
+  const [indexOftemp, setIndexOftemp] = useState(null)
 
   useEffect(() => {
-    fetchOrder(orderId)
+    console.log(order)
+    if (orderId) {
+      fetchOrder(orderId)
+
+      setSelectedStatus(order?.status)
+    }
   }, [])
+
+  useEffect(() => {
+    if (order) {
+      setIndexOftemp(possibleStatus.indexOf(order.status))
+    }
+  }, [order])
+
+  const [isEditing, setIsEditing] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+
+  const handleStatusChange = (e) => {
+    console.log(e.target.value)
+    setIsEditing(true)
+    setSelectedStatus(e.target.value)
+  }
+
+  const handleSave = () => {
+    setIsEditing(false)
+    setIsSaving(true)
+    axios
+      .put(
+        `${API_URL}/orders/update/${orderId}`,
+        { status: selectedStatus },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data)
+        toast.success("Order status updated successfully")
+
+        // Update the order status in the store
+        setOrder({ ...order, status: selectedStatus })
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error("Failed to update order status")
+      })
+      .finally(() => {
+        setIsSaving(false)
+      })
+  }
+
+  const handleCancel = () => {
+    setIsEditing(false)
+    setSelectedStatus(order.status)
+  }
 
   if (!order) {
     return <h1>Loading...</h1>
@@ -17,6 +87,11 @@ export const OrderDetail = () => {
 
   return (
     <div className="container mx-auto p-8">
+      <p>
+        <Link to="/dashboard/allorders">Back to All Orders</Link>
+      </p>
+
+      <Toaster />
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         <div className="p-6">
           <h1 className="text-3xl font-bold mb-4">Order Detail</h1>
@@ -44,15 +119,43 @@ export const OrderDetail = () => {
                   id="status"
                   name="status"
                   className="w-full p-2 border border-gray-300 rounded-md"
+                  value={selectedStatus}
+                  onChange={handleStatusChange}
                 >
-                  <option value="placed">Placed</option>
-                  <option value="intransit">In Transit</option>
-                  <option value="out_for_delivery">Out for Delivery</option>
-                  <option value="delivered">Delivered</option>
+                  <option value="PLACED" disabled={indexOftemp > 0}>
+                    Placed
+                  </option>
+                  <option value="IN TRANSIT" disabled={indexOftemp > 1}>
+                    In Transit
+                  </option>
+                  <option value="OUT FOR DELIVERY" disabled={indexOftemp > 2}>
+                    Out for Delivery
+                  </option>
+                  <option value="DELIVERED" disabled={indexOftemp > 3}>
+                    Delivered
+                  </option>
                 </select>
               </div>
             </div>
           </div>
+
+          {isEditing && (
+            <div className="mb-3 w-full flex justify-end gap-4">
+              <button
+                className="bg-red-500 text-white  px-4 py-2 rounded-md  md:mt-0"
+                onClick={handleCancel}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="bg-green-500 text-white  px-4 py-2 rounded-md  md:mt-0"
+                onClick={handleSave}
+              >
+                {isSaving ? "Saving..." : "Save"}
+              </button>
+            </div>
+          )}
 
           <div className="flex flex-col md:flex-row md:items-center mb-6">
             <div className="md:w-1/2">
