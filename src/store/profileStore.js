@@ -5,6 +5,7 @@ export const useProfileStore = create((set) => {
   const API_URL = import.meta.env.VITE_API_URL
 
   let accessToken = localStorage.getItem("accessToken")
+  console.log(accessToken)
 
   // Access the accesstoken from cookie
   const cookies = document.cookie.split("; ")

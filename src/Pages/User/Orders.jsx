@@ -3,6 +3,7 @@ import { useOrderStore } from "../../store/orderStore"
 import { useAuthStore } from "../../store/authStore"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
+import { FaChevronRight } from "react-icons/fa6"
 
 export const Orders = () => {
   const navigate = useNavigate()
@@ -14,11 +15,24 @@ export const Orders = () => {
     if (!accessToken) {
       navigate("/auth/get-started/login")
     } else {
+      console.log("fetching orders")
       fetchMyOrders()
     }
-  }, [])
+  }, [navigate])
 
   console.log(myOrders)
+
+  const arriving = [
+    "Today",
+    "Tomorrow",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ]
 
   return (
     <>
@@ -68,8 +82,52 @@ export const Orders = () => {
       </div> */}
 
       <div className="container mx-auto">
-        <h1 className="text-2xl font-bold text-center my-5">Your Orders</h1>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <h1 className="text-2xl font-bold text-center my-2">Your Orders</h1>
+
+        {/* Searchbar to search order */}
+        <div className="flex w-full gap-2">
+          <input
+            type="text"
+            placeholder="Search all orders..."
+            className="px-4 py-2 rounded-lg w-full"
+          />
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+            Search
+          </button>
+        </div>
+
+        <div className="mt-8 space-y-5">
+          {myOrders.map((order) => (
+            <Link to={`${order._id}`} key={order._id} className="block">
+              <div key={order._id} className="grid grid-cols-custom-3 gap-2">
+                <div className="h-[100px]">
+                  <img
+                    src={order.product.images[0].url}
+                    alt="product"
+                    className="h-full w-full object-cover rounded-lg object-center"
+                  />
+                </div>
+                <div className="flex justify-center items-center">
+                  <p className="text-green-800 font-semibold text-lg">
+                    Arriving{" "}
+                    {arriving[Math.floor(Math.random() * arriving.length)]}
+                  </p>
+                </div>
+                <div className="flex justify-center items-center">
+                  <FaChevronRight className="text-xl cursor-pointer" />
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div>
+          <p className="text-center text-lg font-thin mt-7 text-gray-500">
+            You have reached the end of your orders.
+          </p>
+        </div>
+
+        {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="col-span-1 md:col-span-4">
             <div className="flex justify-between bg-gray-200 px-4 py-2 rounded-lg">
               <p className="text-lg font-semibold">Order ID</p>
@@ -78,9 +136,7 @@ export const Orders = () => {
               <p className="text-lg font-semibold">Status</p>
             </div>
           </div>
-          {/* Orders List */}
           <div className="col-span-1 md:col-span-4">
-            {/* Iterate over orders */}
             {myOrders.map((order) => (
               <div
                 key={order._id}
@@ -111,7 +167,7 @@ export const Orders = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   )

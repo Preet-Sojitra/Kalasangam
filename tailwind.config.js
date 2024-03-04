@@ -15,6 +15,9 @@ export default {
         sans: ["DM Sans", "sans-serif"],
         serif: ["DM Serif Display", "serif"],
       },
+      gridTemplateColumns: {
+        "custom-3": "0.3fr 0.6fr 0.1fr",
+      },
     },
   },
   // plugins: "",

@@ -46,12 +46,7 @@ export const MyProfile = () => {
     if (!accessToken) {
       navigate("/auth/get-started/login")
     }
-
     fetchProfile()
-
-    return () => {
-      setProfile({})
-    }
   }, [accessToken])
 
   const edit = () => {
@@ -86,20 +81,21 @@ export const MyProfile = () => {
     }
   }
 
+  if (!profile) {
+    return <div>Loading...</div>
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen">
       <Toaster />
-      <div className="flex justify-between p-4">
-        <Link to="/home">
-          <button className="font-bold py-2 px-4 rounded">Home</button>
-        </Link>
-        <button
-          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
-      </div>
+
+      <button
+        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded my-2"
+        onClick={handleLogout}
+      >
+        Logout
+      </button>
+
       <div className="container mx-auto p-8 bg-white rounded shadow-md">
         <div className="text-right space-x-3">
           {isEditing ? (
@@ -322,8 +318,7 @@ export const MyProfile = () => {
       )}
 
       {/* If role is customer, then we show one navbar */}
-
-      {role === "customer" && (
+      {/* {role === "customer" && (
         <div>
           <Link to="/home">
             <button className="font-bold py-2 px-4 rounded">Home</button>
@@ -340,7 +335,7 @@ export const MyProfile = () => {
             </button>
           </Link>
         </div>
-      )}
+      )} */}
     </div>
   )
 }

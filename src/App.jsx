@@ -38,6 +38,11 @@ import { StripeContainer } from "./components/Stripe/StripeContainer"
 import { Orders } from "./Pages/User/Orders"
 import { ArtisanOrders } from "./Pages/Dashboard/ArtisanOrders"
 import { OrderDetail } from "./Pages/Dashboard/OrderDetail"
+import { More } from "./Pages/More"
+import { Dashboard as TempDashboardLayout } from "./Layouts/TempDashboard"
+import { UserNavigationOptions } from "./Pages/UserNavigationOptions"
+import { ComingSoon } from "./Pages/ComingSoon"
+import { NotFound } from "./Pages/NotFound"
 
 function App() {
   return (
@@ -59,6 +64,14 @@ function App() {
             path="/buynow/:productId/checkout"
             element={<StripeContainer />}
           />
+
+          <Route path="/" element={<TempDashboardLayout />}>
+            <Route path="account" element={<UserNavigationOptions />} />
+            <Route path="account/profile" element={<MyProfile />} />
+            <Route path="account/orders" element={<Orders />} />
+            <Route path="account/orders/:orderId" element={<OrderDetail />} />
+            <Route path="more" element={<More />} />
+          </Route>
 
           {/* For USER */}
           <Route path="/dashboard">
@@ -91,7 +104,8 @@ function App() {
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/account" element={<Account />} />
           <Route path="/artisian/addproduct" element={<AddProduct />} />
-          <Route path="/cart" element={<Cart />} />
+          {/* <Route path="/cart" element={<Cart />} /> */}
+          <Route path="/cart" element={<ComingSoon />} />
           <Route path="/auth/get-started/login" element={<GetStartedLogin />} />
           <Route
             path="/auth/get-started/register"
@@ -112,9 +126,12 @@ function App() {
           {/* <Route path="/vieworderss" element={<OrderTable />} /> */}
           {/* <Route path="/artisian/vieworders" element={<ViewOrders />} /> */}
 
-          <Route path="/myprofile" element={<MyProfile />} />
+          {/* No longer needed */}
+          {/* <Route path="/myprofile" element={<MyProfile />} /> */}
+
+          <Route path="/comingsoon" element={<ComingSoon />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
-        {/* <Test /> */}
       </CartProvider>
     </Router>
   )

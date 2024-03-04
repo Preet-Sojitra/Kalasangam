@@ -48,7 +48,9 @@ export const Nav = () => {
   const isHome = location.pathname === "/home"
   const isCart = location.pathname === "/cart"
   const isProfile = location.pathname === "/profile"
+  const isAccount = location.pathname === "/account"
   const isMore = location.pathname === "/dashboard"
+  const isMoreTemp = location.pathname === "/more"
   const isLogin =
     location.pathname === "/auth/get-started/login" ||
     location.pathname === "/auth/login"
@@ -71,22 +73,38 @@ export const Nav = () => {
           </div>
         </Link>
 
-        <Link to={accessToken ? "/myprofile" : "/auth/get-started/login"}>
+        <Link to={accessToken ? "/account" : "/auth/get-started/login"}>
           <div className="flex flex-col items-center gap-[1px] cursor-pointer">
             <VscAccount
               className={`text-[22px] ${
-                isProfile || (isLogin && "text-accent")
+                // isProfile || (isLogin && "text-accent")
+                // isAccount || (isLogin && "text-accent")
+                isAccount && "text-accent"
               }`}
             />
             <h1
               className={`${
-                isProfile || (isLogin && "text-accent font-medium")
+                // isProfile || (isLogin && "text-accent font-medium")
+                // isAccount || (isLogin && "text-accent font-medium")
+                isAccount && "text-accent font-medium"
               }`}
             >
               {
                 // If accessToken is present then show profile else show login
-                accessToken ? "profile" : "login"
+                // accessToken ? "Profile" : "login"
+                accessToken ? "Account" : "Login"
               }
+            </h1>
+          </div>
+        </Link>
+
+        <Link to="/more">
+          <div className="flex flex-col items-center gap-[1px] cursor-pointer">
+            <GiHamburgerMenu
+              className={`text-[22px] ${isMoreTemp && "text-accent"}`}
+            />
+            <h1 className={`${isMoreTemp && "text-accent font-medium"}`}>
+              more
             </h1>
           </div>
         </Link>
@@ -94,10 +112,8 @@ export const Nav = () => {
         {role === "artisian" && (
           <Link to="/dashboard/analytics">
             <div className="flex flex-col items-center gap-[1px] cursor-pointer">
-              <GiHamburgerMenu
-                className={`text-[22px] ${isMore && "text-accent"}`}
-              />
-              <h1 className={`${isMore && "text-accent font-medium"}`}>more</h1>
+              <GiHamburgerMenu className={`text-[22px]`} />
+              <h1 className={`"text-accent font-medium"}`}>more</h1>
             </div>
           </Link>
         )}
