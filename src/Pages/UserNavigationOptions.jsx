@@ -1,11 +1,10 @@
 import React, { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useProfileStore } from "../store/profileStore"
-import { useNavigate, useParams, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 export const UserNavigationOptions = () => {
   const { profile, fetchProfile } = useProfileStore()
-  const navigate = useNavigate()
   const location = useLocation()
 
   console.log("profile")
@@ -16,7 +15,7 @@ export const UserNavigationOptions = () => {
 
     fetchProfile()
     // console.log(profile)
-  }, [location])
+  }, [])
 
   if (!profile) {
     return <div>Loading...</div>

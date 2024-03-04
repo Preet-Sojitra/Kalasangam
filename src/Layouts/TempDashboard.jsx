@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Outlet } from "react-router"
 import { Nav } from "../components/Nav"
 import { FaChevronLeft } from "react-icons/fa6"
@@ -7,6 +7,11 @@ import { useNavigate, useLocation } from "react-router"
 export const Dashboard = () => {
   const navigate = useNavigate()
   const location = useLocation()
+
+  useEffect(() => {
+    console.log("layout reached")
+  }, [])
+
   return (
     <>
       <div className="bg-secondary overflow-hidden min-h-screen pb-10">
