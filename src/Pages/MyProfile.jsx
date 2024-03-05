@@ -307,7 +307,7 @@ export const MyProfile = () => {
       </div>
 
       {/* If Role is Artisan then show  */}
-      {role === "artisan" && (
+      {/* {role === "artisan" && (
         <>
           <Link to="/dashboard/analytics">
             <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
@@ -315,7 +315,7 @@ export const MyProfile = () => {
             </button>
           </Link>
         </>
-      )}
+      )} */}
 
       {/* If role is customer, then we show one navbar */}
       {/* {role === "customer" && (

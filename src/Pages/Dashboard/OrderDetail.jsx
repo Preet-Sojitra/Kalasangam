@@ -105,11 +105,6 @@ export const OrderDetail = () => {
 
   return (
     <div className="container mx-auto mt-3">
-      <p>
-        {/* //TODO: IF both routes for user dashboard and artisan dashboard for orders are merged, then remove this code and hardcode the link */}
-        {/* <button onClick={() => navigate(-1)}>Back to All Orders</button> */}
-      </p>
-
       <Toaster />
 
       <div>
@@ -136,40 +131,86 @@ export const OrderDetail = () => {
             Placed
           </h1>
 
-          <div className="grid grid-cols-4 mt-4">
-            <div className="justify-self-center space-y-2 flex flex-col items-center">
-              {order.status === "PLACED" || indexOftemp > 0 ? (
-                <IoIosCheckmarkCircle className="text-[27px] text-accent" />
-              ) : (
-                <div className="w-6 h-6 rounded-full border-accent border"></div>
-              )}
-              <p className="text-sm text-center">Placed</p>
+          {role === "artisan" ? (
+            <div className="flex justify-center mt-2">
+              <select
+                id="status"
+                name="status"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                value={selectedStatus}
+                onChange={handleStatusChange}
+              >
+                <option value="PLACED" disabled={indexOftemp > 0}>
+                  Placed
+                </option>
+                <option value="IN TRANSIT" disabled={indexOftemp > 1}>
+                  In Transit
+                </option>
+                <option value="OUT FOR DELIVERY" disabled={indexOftemp > 2}>
+                  Out for Delivery
+                </option>
+                <option value="DELIVERED" disabled={indexOftemp > 3}>
+                  Delivered
+                </option>
+              </select>
             </div>
-            <div className="justify-self-center space-y-2 flex flex-col items-center">
-              {order.status === "IN TRANSIT" || indexOftemp > 1 ? (
-                <IoIosCheckmarkCircle className="text-[27px] text-accent" />
-              ) : (
-                <div className="w-6 h-6 rounded-full border-accent border"></div>
-              )}
-              <p className="text-sm text-center">In Transit</p>
+          ) : (
+            // FOR CUSTOMER
+            <div className="grid grid-cols-4 mt-4">
+              <div className="justify-self-center space-y-2 flex flex-col items-center">
+                {order.status === "PLACED" || indexOftemp > 0 ? (
+                  <IoIosCheckmarkCircle className="text-[27px] text-accent" />
+                ) : (
+                  <div className="w-6 h-6 rounded-full border-accent border"></div>
+                )}
+                <p className="text-sm text-center">Placed</p>
+              </div>
+              <div className="justify-self-center space-y-2 flex flex-col items-center">
+                {order.status === "IN TRANSIT" || indexOftemp > 1 ? (
+                  <IoIosCheckmarkCircle className="text-[27px] text-accent" />
+                ) : (
+                  <div className="w-6 h-6 rounded-full border-accent border"></div>
+                )}
+                <p className="text-sm text-center">In Transit</p>
+              </div>
+              <div className="justify-self-center space-y-2 flex flex-col items-center">
+                {order.status === "OUT FOR DELIVERY" || indexOftemp > 2 ? (
+                  <IoIosCheckmarkCircle className="text-[27px] text-accent" />
+                ) : (
+                  <div className="w-6 h-6 rounded-full border-accent border"></div>
+                )}
+                <p className="text-sm text-center">Out for Delivery</p>
+              </div>
+              <div className="justify-self-center space-y-2 flex flex-col items-center">
+                {order.status === "DELIVERED" || indexOftemp > 3 ? (
+                  <IoIosCheckmarkCircle className="text-[27px] text-accent" />
+                ) : (
+                  <div className="w-6 h-6 rounded-full border-accent border"></div>
+                )}
+                <p className="text-sm text-center">Delivered</p>
+              </div>
             </div>
-            <div className="justify-self-center space-y-2 flex flex-col items-center">
-              {order.status === "OUT FOR DELIVERY" || indexOftemp > 2 ? (
-                <IoIosCheckmarkCircle className="text-[27px] text-accent" />
-              ) : (
-                <div className="w-6 h-6 rounded-full border-accent border"></div>
-              )}
-              <p className="text-sm text-center">Out for Delivery</p>
+          )}
+
+          {isEditing && (
+            <div className="mt-3 w-full flex gap-4">
+              <button
+                className="bg-red-500 text-white  px-4 py-2 rounded-md  md:mt-0"
+                onClick={handleCancel}
+                disabled={isSaving || role === "customer"}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="bg-green-500 text-white  px-4 py-2 rounded-md  md:mt-0"
+                onClick={handleSave}
+                disabled={isSaving || role === "customer"}
+              >
+                {isSaving ? "Saving..." : "Save"}
+              </button>
             </div>
-            <div className="justify-self-center space-y-2 flex flex-col items-center">
-              {order.status === "DELIVERED" || indexOftemp > 3 ? (
-                <IoIosCheckmarkCircle className="text-[27px] text-accent" />
-              ) : (
-                <div className="w-6 h-6 rounded-full border-accent border"></div>
-              )}
-              <p className="text-sm text-center">Delivered</p>
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Shipping INFO */}

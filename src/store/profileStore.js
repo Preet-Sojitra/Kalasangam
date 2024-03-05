@@ -16,13 +16,13 @@ export const useProfileStore = create((set, get) => {
     // console.log(accessToken)
 
     // Access the accesstoken from cookie
-    const cookies = document.cookie.split("; ")
-    const accessTokenCookie = cookies.find((cookie) =>
-      cookie.includes("accessToken")
-    )
-    if (accessTokenCookie) {
-      accessToken = accessTokenCookie.split("=")[1]
-    }
+    // const cookies = document.cookie.split("; ")
+    // const accessTokenCookie = cookies.find((cookie) =>
+    //   cookie.includes("accessToken")
+    // )
+    // if (accessTokenCookie) {
+    //   accessToken = accessTokenCookie.split("=")[1]
+    // }
 
     try {
       console.log("Fetching profile")

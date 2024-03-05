@@ -109,14 +109,14 @@ export const Nav = () => {
           </div>
         </Link>
 
-        {role === "artisian" && (
+        {/* {role === "artisian" && (
           <Link to="/dashboard/analytics">
             <div className="flex flex-col items-center gap-[1px] cursor-pointer">
               <GiHamburgerMenu className={`text-[22px]`} />
               <h1 className={`"text-accent font-medium"}`}>more</h1>
             </div>
           </Link>
-        )}
+        )} */}
 
         {/* <Link to="/dashboard/analytics">
           <div className="flex flex-col items-center gap-[1px] cursor-pointer">

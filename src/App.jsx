@@ -43,6 +43,7 @@ import { Dashboard as TempDashboardLayout } from "./Layouts/TempDashboard"
 import { UserNavigationOptions } from "./Pages/UserNavigationOptions"
 import { ComingSoon } from "./Pages/ComingSoon"
 import { NotFound } from "./Pages/NotFound"
+import { OrdersCombined } from "./Pages/OrdersCombined"
 
 function App() {
   return (
@@ -68,28 +69,37 @@ function App() {
           <Route path="/" element={<TempDashboardLayout />}>
             <Route path="account" element={<UserNavigationOptions />} />
             <Route path="account/profile" element={<MyProfile />} />
-            <Route path="account/orders" element={<Orders />} />
+            {/* <Route path="account/orders" element={<Orders />} /> */}
+            <Route path="account/orders" element={<OrdersCombined />} />
             <Route path="account/orders/:orderId" element={<OrderDetail />} />
             <Route path="more" element={<More />} />
+
+            {/* For ARTISANS */}
+            {/* <Route path="account/allorders" element={<ArtisanOrders />} /> */}
+            {/* <Route
+              path="account/allorders/:orderId"
+              element={<OrderDetail />}
+            /> */}
+            <Route path="account/addproduct" element={<AddProduct />} />
+            <Route path="account/analytics" element={<Analytics />} />
           </Route>
 
           {/* For USER */}
-          <Route path="/dashboard">
-            {/* // TODO: can /dashboard/orders and /dashboard/allorders be merged since we are showing order details only but layout is different. So it can me merged by showing more details on Artisan Order page is user is artisan else less detail. Can be done via extracting into one component, and in that component check, whether logged in user is artisan or user, then render accordintly.
-             * TACKLE LATER
-             */}
-            <Route path="orders" element={<Orders />} />
-            <Route path="orders/:orderId" element={<OrderDetail />} />
-          </Route>
+          {/* <Route path="/dashboard"> */}
+          {/* // TODO: can /dashboard/orders and /dashboard/allorders be merged since we are showing order details only but layout is different. So it can me merged by showing more details on Artisan Order page is user is artisan else less detail. Can be done via extracting into one component, and in that component check, whether logged in user is artisan or user, then render accordintly.
+           * TACKLE LATER
+           */}
+          {/* <Route path="orders" element={<Orders />} /> */}
+          {/* <Route path="orders/:orderId" element={<OrderDetail />} /> */}
+          {/* </Route> */}
 
           {/* //TODO: need to sort the routes for USER And Artisan Dashboard */}
-
           {/* For ARTISANS */}
-          <Route path="/dashboard" element={<DashBoardLayout />}>
-            <Route path="analytics" element={<Analytics />} />
-            <Route path="allorders" element={<ArtisanOrders />} />
-            <Route path="allorders/:orderId" element={<OrderDetail />} />
-          </Route>
+          {/* <Route path="/dashboard" element={<DashBoardLayout />}> */}
+          {/* <Route path="analytics" element={<Analytics />} /> */}
+          {/* <Route path="allorders" element={<ArtisanOrders />} /> */}
+          {/* <Route path="allorders/:orderId" element={<OrderDetail />} /> */}
+          {/* </Route> */}
 
           {/* <Route path="/all-products" element={<AllProducts />} /> */}
           {/* <Route path="/product/:productId" element={<ProductDetail />} /> */}
@@ -103,7 +113,7 @@ function App() {
           {/* <Route path="/auth/signup" element={<ArtisanSignup />} /> */}
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/account" element={<Account />} />
-          <Route path="/artisian/addproduct" element={<AddProduct />} />
+          {/* <Route path="/artisian/addproduct" element={<AddProduct />} /> */}
           {/* <Route path="/cart" element={<Cart />} /> */}
           <Route path="/cart" element={<ComingSoon />} />
           <Route path="/auth/get-started/login" element={<GetStartedLogin />} />

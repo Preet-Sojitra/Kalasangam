@@ -9,6 +9,8 @@ export const useOrderStore = create((set, get) => {
   // console.log(accessToken)
 
   const fetchMyOrders = async () => {
+    const accessToken = useAuthStore.getState().accessToken
+
     try {
       const res = await axios.get(`${API_URL}/orders/myorders`, {
         headers: {
@@ -25,6 +27,7 @@ export const useOrderStore = create((set, get) => {
   }
 
   const fetchArtisanOrders = async () => {
+    const accessToken = useAuthStore.getState().accessToken
     try {
       const res = await axios.get(`${API_URL}/orders/artisan/allorders`, {
         headers: {
