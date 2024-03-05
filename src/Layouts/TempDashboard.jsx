@@ -8,10 +8,6 @@ export const Dashboard = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  useEffect(() => {
-    console.log("layout reached")
-  }, [])
-
   return (
     <>
       <div className="bg-secondary overflow-hidden min-h-screen pb-10">

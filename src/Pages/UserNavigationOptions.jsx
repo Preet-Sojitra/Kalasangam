@@ -1,20 +1,16 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { useProfileStore } from "../store/profileStore"
 import { useLocation } from "react-router-dom"
+import axios from "axios"
+import { useAuthStore } from "../store/authStore"
 
 export const UserNavigationOptions = () => {
-  const { profile, fetchProfile } = useProfileStore()
-  const location = useLocation()
-
-  console.log("profile")
-  console.log(profile)
+  const profile = useProfileStore((state) => state.profile)
+  const fetchProfile = useProfileStore((state) => state.fetchProfile)
 
   useEffect(() => {
-    console.log("reached here")
-
     fetchProfile()
-    // console.log(profile)
   }, [])
 
   if (!profile) {

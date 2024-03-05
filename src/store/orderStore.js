@@ -6,7 +6,7 @@ export const useOrderStore = create((set, get) => {
   const API_URL = import.meta.env.VITE_API_URL
 
   const accessToken = useAuthStore.getState().accessToken
-  console.log(accessToken)
+  // console.log(accessToken)
 
   const fetchMyOrders = async () => {
     try {

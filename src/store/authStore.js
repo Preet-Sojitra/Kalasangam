@@ -1,5 +1,4 @@
 import { create } from "zustand"
-import { useProfileStore } from "./profileStore"
 
 export const useAuthStore = create((set) => {
   // Check if accessToken is present in local storage

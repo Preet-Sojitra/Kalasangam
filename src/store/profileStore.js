@@ -1,29 +1,29 @@
 import { create } from "zustand"
 import axios from "axios"
 
-export const useProfileStore = create((set) => {
-  const API_URL = import.meta.env.VITE_API_URL
-
-  let accessToken = localStorage.getItem("accessToken")
-  console.log(accessToken)
-
-  // Access the accesstoken from cookie
-  const cookies = document.cookie.split("; ")
-  const accessTokenCookie = cookies.find((cookie) =>
-    cookie.includes("accessToken")
-  )
-  if (accessTokenCookie) {
-    accessToken = accessTokenCookie.split("=")[1]
-  }
-
-  if (!accessToken) {
-    return {
-      profile: {},
-      fetchProfile: () => {},
-    }
-  }
+export const useProfileStore = create((set, get) => {
+  // if (!accessToken) {
+  //   return {
+  //     profile: {},
+  //     // fetchProfile: () => {},
+  //   }
+  // }
 
   const fetchProfile = async () => {
+    const API_URL = import.meta.env.VITE_API_URL
+
+    let accessToken = localStorage.getItem("accessToken")
+    // console.log(accessToken)
+
+    // Access the accesstoken from cookie
+    const cookies = document.cookie.split("; ")
+    const accessTokenCookie = cookies.find((cookie) =>
+      cookie.includes("accessToken")
+    )
+    if (accessTokenCookie) {
+      accessToken = accessTokenCookie.split("=")[1]
+    }
+
     try {
       console.log("Fetching profile")
       const response = await axios.get(`${API_URL}/profile`, {
@@ -46,7 +46,7 @@ export const useProfileStore = create((set) => {
 
   return {
     profile: {},
-    fetchProfile: fetchProfile,
+    fetchProfile,
     setProfile: (profile) => set({ profile }),
   }
 })
