@@ -19,7 +19,6 @@ import {
   PieChart,
   Pie,
 } from "recharts"
-import NavBar from "../../components/NavBar"
 
 const COLORS = [
   "#0088FE",
@@ -100,7 +99,6 @@ export default function Analytics() {
 
   return (
     <div className="bg-secondary">
-      {/* <NavBar /> */}
       <main className=" text-black font-sans p-3">
         <div className="text-5xl flex items-center justify-center font-serif">
           <h3>Analytics</h3>

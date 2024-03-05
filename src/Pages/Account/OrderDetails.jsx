@@ -10,7 +10,7 @@ import { IoIosCheckmarkCircle } from "react-icons/io"
 
 const API_URL = import.meta.env.VITE_API_URL
 
-export const OrderDetail = () => {
+export const OrderDetails = () => {
   const navigate = useNavigate()
 
   const { orderId } = useParams()
@@ -25,13 +25,13 @@ export const OrderDetail = () => {
     "OUT FOR DELIVERY",
     "DELIVERED",
   ]
-  const [indexOftemp, setIndexOftemp] = useState(null)
-  // console.log(indexOftemp)
+  const [indexOfPossibleStatus, setIndexOfPossibleStatus] = useState(null)
+  // console.log(indexOfPossibleStatus)
   // const [orderSummary, setOrderSummary] = useState({})
 
   // ! Uncomment this code to fetch the order details
   useEffect(() => {
-    console.log(order)
+    // console.log(order)
     if (orderId) {
       fetchOrder(orderId)
 
@@ -45,14 +45,14 @@ export const OrderDetail = () => {
   // if (role != "customer") {
   //   useEffect(() => {
   //     if (order) {
-  //       setIndexOftemp(possibleStatus.indexOf(order.status))
+  //       setIndexOfPossibleStatus(possibleStatus.indexOf(order.status))
   //     }
   //   }, [order])
   // }
 
   useEffect(() => {
     if (order) {
-      setIndexOftemp(possibleStatus.indexOf(order.status))
+      setIndexOfPossibleStatus(possibleStatus.indexOf(order.status))
     }
   }, [order])
 
@@ -140,16 +140,19 @@ export const OrderDetail = () => {
                 value={selectedStatus}
                 onChange={handleStatusChange}
               >
-                <option value="PLACED" disabled={indexOftemp > 0}>
+                <option value="PLACED" disabled={indexOfPossibleStatus > 0}>
                   Placed
                 </option>
-                <option value="IN TRANSIT" disabled={indexOftemp > 1}>
+                <option value="IN TRANSIT" disabled={indexOfPossibleStatus > 1}>
                   In Transit
                 </option>
-                <option value="OUT FOR DELIVERY" disabled={indexOftemp > 2}>
+                <option
+                  value="OUT FOR DELIVERY"
+                  disabled={indexOfPossibleStatus > 2}
+                >
                   Out for Delivery
                 </option>
-                <option value="DELIVERED" disabled={indexOftemp > 3}>
+                <option value="DELIVERED" disabled={indexOfPossibleStatus > 3}>
                   Delivered
                 </option>
               </select>
@@ -158,7 +161,7 @@ export const OrderDetail = () => {
             // FOR CUSTOMER
             <div className="grid grid-cols-4 mt-4">
               <div className="justify-self-center space-y-2 flex flex-col items-center">
-                {order.status === "PLACED" || indexOftemp > 0 ? (
+                {order.status === "PLACED" || indexOfPossibleStatus > 0 ? (
                   <IoIosCheckmarkCircle className="text-[27px] text-accent" />
                 ) : (
                   <div className="w-6 h-6 rounded-full border-accent border"></div>
@@ -166,7 +169,7 @@ export const OrderDetail = () => {
                 <p className="text-sm text-center">Placed</p>
               </div>
               <div className="justify-self-center space-y-2 flex flex-col items-center">
-                {order.status === "IN TRANSIT" || indexOftemp > 1 ? (
+                {order.status === "IN TRANSIT" || indexOfPossibleStatus > 1 ? (
                   <IoIosCheckmarkCircle className="text-[27px] text-accent" />
                 ) : (
                   <div className="w-6 h-6 rounded-full border-accent border"></div>
@@ -174,7 +177,8 @@ export const OrderDetail = () => {
                 <p className="text-sm text-center">In Transit</p>
               </div>
               <div className="justify-self-center space-y-2 flex flex-col items-center">
-                {order.status === "OUT FOR DELIVERY" || indexOftemp > 2 ? (
+                {order.status === "OUT FOR DELIVERY" ||
+                indexOfPossibleStatus > 2 ? (
                   <IoIosCheckmarkCircle className="text-[27px] text-accent" />
                 ) : (
                   <div className="w-6 h-6 rounded-full border-accent border"></div>
@@ -182,7 +186,7 @@ export const OrderDetail = () => {
                 <p className="text-sm text-center">Out for Delivery</p>
               </div>
               <div className="justify-self-center space-y-2 flex flex-col items-center">
-                {order.status === "DELIVERED" || indexOftemp > 3 ? (
+                {order.status === "DELIVERED" || indexOfPossibleStatus > 3 ? (
                   <IoIosCheckmarkCircle className="text-[27px] text-accent" />
                 ) : (
                   <div className="w-6 h-6 rounded-full border-accent border"></div>
@@ -370,16 +374,16 @@ export const OrderDetail = () => {
                     value={selectedStatus}
                     onChange={handleStatusChange}
                   >
-                    <option value="PLACED" disabled={indexOftemp > 0}>
+                    <option value="PLACED" disabled={indexOfPossibleStatus > 0}>
                       Placed
                     </option>
-                    <option value="IN TRANSIT" disabled={indexOftemp > 1}>
+                    <option value="IN TRANSIT" disabled={indexOfPossibleStatus > 1}>
                       In Transit
                     </option>
-                    <option value="OUT FOR DELIVERY" disabled={indexOftemp > 2}>
+                    <option value="OUT FOR DELIVERY" disabled={indexOfPossibleStatus > 2}>
                       Out for Delivery
                     </option>
-                    <option value="DELIVERED" disabled={indexOftemp > 3}>
+                    <option value="DELIVERED" disabled={indexOfPossibleStatus > 3}>
                       Delivered
                     </option>
                   </select>

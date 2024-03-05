@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useLocation, useParams } from "react-router-dom"
 import axios from "axios"
-import NavBar from "../components/NavBar"
 import { Nav } from "../components/Nav"
 import { toast, Toaster } from "react-hot-toast"
 import { useProductsStore } from "../store/productsStore"

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { FaChevronRight } from "react-icons/fa6"
 
-export const Orders = () => {
+export const UserOrders = () => {
   const navigate = useNavigate()
 
   const { accessToken } = useAuthStore()

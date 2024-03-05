@@ -1,16 +1,15 @@
-import React, {useState, useEffect} from "react"
+import React, { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import CatalogProduct from "../components/Products/CatalogProduct"
 // import product from "../assets/product1.jpeg"
-// import NavBar from "../components/NavBar"
-import products from "../data/products"
+// import products from "../data/products"
 import { IoChevronBack } from "react-icons/io5"
-import axios from 'axios';
+// import axios from "axios"
 
-const API_URL = import.meta.env.VITE_API_URL
+// const API_URL = import.meta.env.VITE_API_URL
 const AllProducts = () => {
   const navigate = useNavigate()
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([])
 
   // useEffect(() => {
   //   const fetchProducts = async () => {
@@ -23,13 +22,10 @@ const AllProducts = () => {
   //   };
 
   //   fetchProducts();
-  // }, []); 
+  // }, []);
 
   return (
     <div className="bg-white pb-8">
-      {/* <div>
-        <NavBar />
-      </div> */}
       <div className="px-4 pt-6 pb-4 text-2xl text-primary flex items-center gap-2 sticky top-0 bg-white">
         <IoChevronBack
           className="text-[25px] cursor-pointer"

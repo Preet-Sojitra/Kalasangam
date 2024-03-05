@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import NavBar from "../components/NavBar"
 import search from "../assets/search.svg"
 import ProductCard from "../components/Products/ProductCard.jsx"
 import { Link } from "react-router-dom"
@@ -94,10 +93,6 @@ const Home = () => {
     <>
       <div className="bg-secondary pb-12">
         <div className="bg-primary rounded-bl-[70px] rounded-br-[70px]">
-          {/* Below is old */}
-          {/* <div>
-            <NavBar />
-          </div> */}
           <div className="flex items-center justify-center pt-10">
             <p className="text-white font-serif text-3xl justify-center text-center">
               Discover your cherished handmade decorations

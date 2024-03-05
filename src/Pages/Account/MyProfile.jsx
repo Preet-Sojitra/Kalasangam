@@ -1,9 +1,9 @@
 // MyProfile.js
 import React, { useEffect, useState } from "react"
-import { useAuthStore } from "../store/authStore"
+import { useAuthStore } from "../../store/authStore"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
-import { useProfileStore } from "../store/profileStore"
+import { useProfileStore } from "../../store/profileStore"
 import { MdEdit } from "react-icons/md"
 import axios from "axios"
 import toast, { Toaster } from "react-hot-toast"

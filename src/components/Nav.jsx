@@ -47,13 +47,11 @@ export const Nav = () => {
 
   const isHome = location.pathname === "/home"
   const isCart = location.pathname === "/cart"
-  const isProfile = location.pathname === "/profile"
   const isAccount = location.pathname === "/account"
-  const isMore = location.pathname === "/dashboard"
-  const isMoreTemp = location.pathname === "/more"
-  const isLogin =
-    location.pathname === "/auth/get-started/login" ||
-    location.pathname === "/auth/login"
+  const isMore = location.pathname === "/more"
+  // const isLogin =
+  //   location.pathname === "/auth/get-started/login" ||
+  //   location.pathname === "/auth/login"
 
   return (
     <>
@@ -101,11 +99,9 @@ export const Nav = () => {
         <Link to="/more">
           <div className="flex flex-col items-center gap-[1px] cursor-pointer">
             <GiHamburgerMenu
-              className={`text-[22px] ${isMoreTemp && "text-accent"}`}
+              className={`text-[22px] ${isMore && "text-accent"}`}
             />
-            <h1 className={`${isMoreTemp && "text-accent font-medium"}`}>
-              more
-            </h1>
+            <h1 className={`${isMore && "text-accent font-medium"}`}>more</h1>
           </div>
         </Link>
 
