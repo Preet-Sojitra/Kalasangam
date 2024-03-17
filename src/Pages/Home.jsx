@@ -28,6 +28,7 @@ const Home = () => {
     // setSearchTerm,
     searchProducts,
     filteredProducts,
+    fetchCategories,
   } = useProductsStore()
 
   // console.log(allProducts)
@@ -75,6 +76,8 @@ const Home = () => {
       document.cookie =
         "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
       document.cookie = "role=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+
+      fetchCategories(5)
     }
   }, [])
 

@@ -19,10 +19,12 @@ export const useProductsStore = create((set, get) => {
   }
   fetchProducts()
 
-  const fetchCategories = async () => {
+  const fetchCategories = async (count) => {
     try {
       // console.log("Fetching all categories")
-      const response = await axios.get(`${API_URL}/products/categories/all`)
+      const response = await axios.get(
+        `${API_URL}/products/categories/all?count=${count}`
+      )
       const { data } = response
       // console.log(data)
 
@@ -32,7 +34,6 @@ export const useProductsStore = create((set, get) => {
       console.log(error)
     }
   }
-  fetchCategories()
 
   const setSelectedCategory = (category) => {
     set({ selectedCategory: category })

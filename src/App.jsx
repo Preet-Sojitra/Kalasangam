@@ -26,6 +26,7 @@ import { UserNavigationOptions } from "./Pages/Account/UserNavigationOptions"
 import { ComingSoon } from "./Pages/ComingSoon"
 import { NotFound } from "./Pages/NotFound"
 import { OrdersCombined } from "./Pages/Account/OrdersCombined"
+import { ProductsByCategory } from "./Pages/ProductsByCategory"
 // import Cart from "./Pages/Cart"
 // import { Test } from "./Test"
 // import Inventory from "./Pages/Artisans/Inventory"
@@ -40,8 +41,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Explore />} />
           <Route path="/" element={<Main />}>
-            <Route path="/home" element={<Home />} />
+            <Route path="home" element={<Home />} />
             <Route path="all-products" element={<AllProducts />} />
+            <Route
+              path="all-products/:categoryId"
+              element={<ProductsByCategory />}
+            />
             <Route path="product/:productId" element={<ProductDetail />} />
             <Route path="product/:productId/ar" element={<AR />} />
           </Route>

@@ -1,4 +1,6 @@
-import React from "react"
+import React, { useEffect } from "react"
+import { useProductsStore } from "../store/productsStore"
+import { Link } from "react-router-dom"
 
 export const More = () => {
   const categories = [
@@ -28,6 +30,17 @@ export const More = () => {
     },
   ]
 
+  const { fetchCategories, allCategories } = useProductsStore()
+  // console.log(allCategories)
+
+  useEffect(() => {
+    fetchCategories()
+  }, [])
+
+  if (allCategories.length === 0) {
+    return <div>Loading...</div>
+  }
+
   return (
     <>
       {/* Search bar */}
@@ -41,22 +54,35 @@ export const More = () => {
 
       <div className="grid grid-cols-2 justify-between gap-x-2 mt-3 min-h-full gap-y-4">
         {/* Card like structure */}
-        {categories.map((category, index) => (
-          <div
-            key={index}
-            className="bg-white border-black border rounded-md relative h-[180px]"
-          >
-            <h1 className=" px-3 pt-4  pb-2">{category.name}</h1>
+        {allCategories.map((category, index) => {
+          // If category name is undefined, then skip this iteration
+          if (category.name !== "Uncategorized") {
+            return (
+              <Link
+                to={`/all-products/${category._id}`}
+                key={index}
+                className="bg-white border-black border rounded-md relative h-[180px]"
+              >
+                <div>
+                  <h1 className=" px-3 pt-4  pb-2">{category.name}</h1>
 
-            <div className="w-full absolute bottom-0">
-              <img
-                src={category.img}
-                alt="Mobile"
-                className="w-full h-[90px] rounded-tl-[85px] rounded-tr-[85px] object-cover object-center"
-              />
-            </div>
-          </div>
-        ))}
+                  <div className="w-full absolute bottom-0">
+                    {/* // ! FIX: THESE IMAGES NEED TO BE RELEVANT TO CATEGORIES */}
+                    <img
+                      src={
+                        categories[
+                          Math.floor(Math.random() * categories.length)
+                        ].img
+                      }
+                      alt="Mobile"
+                      className="w-full h-[90px] rounded-tl-[85px] rounded-tr-[85px] object-cover object-center"
+                    />
+                  </div>
+                </div>
+              </Link>
+            )
+          }
+        })}
       </div>
 
       <div className="mt-4 my-10">
