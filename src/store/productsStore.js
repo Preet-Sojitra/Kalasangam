@@ -3,10 +3,10 @@ import axios from "axios"
 
 export const useProductsStore = create((set, get) => {
   const API_URL = import.meta.env.VITE_API_URL
-  const fetchProducts = async () => {
+  const fetchProducts = async (count) => {
     try {
       // console.log("Fetching all products")
-      const response = await axios.get(`${API_URL}/products/all`)
+      const response = await axios.get(`${API_URL}/products/all?count=${count}`)
       const { data } = response
       // console.log(data)
 

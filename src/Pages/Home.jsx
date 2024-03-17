@@ -82,7 +82,7 @@ const Home = () => {
     if (selectedCategory !== "Uncategorized") {
       fetchProductByCategory(selectedCategory)
     } else {
-      fetchProducts()
+      fetchProducts(8)
     }
   }, [selectedCategory])
 
@@ -118,7 +118,7 @@ const Home = () => {
           {/* buttons */}
           <div
             className="flex flex-row font-sans text-white space-x-4 justify-center items-center mt-7 text-xl
-          pb-7"
+          pb-7 flex-wrap"
           >
             {allCategories.map((category) => (
               <button
