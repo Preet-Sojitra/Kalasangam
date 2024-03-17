@@ -1,10 +1,5 @@
 import React, { useState } from "react"
-import {
-  CardElement,
-  useStripe,
-  useElements,
-  PaymentElement,
-} from "@stripe/react-stripe-js"
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
 import axios from "axios"
 import { useParams, useLocation } from "react-router"
 import { useAuthStore } from "../../store/authStore"
@@ -18,10 +13,10 @@ export const CheckoutForm = () => {
   const {
     state: { product },
   } = location
-  console.log(product)
+  // console.log(product)
 
   const { productId } = useParams()
-  console.log(productId)
+  // console.log(productId)
 
   const { accessToken } = useAuthStore()
 
@@ -29,7 +24,7 @@ export const CheckoutForm = () => {
 
   const stripe = useStripe()
   const elements = useElements()
-  console.log(stripe, elements)
+  // console.log(stripe, elements)
 
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -86,11 +81,17 @@ export const CheckoutForm = () => {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="w-96">
-        <h1 className="text-3xl font-bold text-center mb-8">Checkout</h1>
+    <div className="flex justify-center items-center h-screen px-6">
+      <div className="bg-white w-96 shadow-lg rounded-lg p-8">
+        <button
+          className="text-gray-500 text-sm mb-4"
+          onClick={() => navigate(-1)}
+        >
+          &lt; Back
+        </button>
+        <h1 className="text-3xl font-bold text-center mb-8">Secure Checkout</h1>
         <form onSubmit={handleStripePayment}>
-          <div className="mb-4">
+          <div className="mb-6">
             <label
               className="block text-sm font-bold mb-2"
               htmlFor="card-element"
@@ -116,17 +117,63 @@ export const CheckoutForm = () => {
             />
           </div>
           <button
-            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out"
             type="submit"
             disabled={!stripe || loading}
           >
-            {loading ? "Processing..." : "Pay"}
+            {loading ? "Processing..." : "Pay Now"}
           </button>
           {error && (
             <div className="text-red-500 text-sm mt-4 text-center">{error}</div>
           )}
         </form>
+        <p className="text-xs text-gray-500 mt-4 text-center">
+          Your payment information is securely processed by Stripe.
+        </p>
       </div>
     </div>
+
+    // <div className="flex justify-center items-center h-screen px-6">
+    //   <div className="w-96">
+    //     <h1 className="text-3xl font-bold text-center mb-8">Checkout</h1>
+    //     <form onSubmit={handleStripePayment}>
+    //       <div className="mb-4">
+    //         <label
+    //           className="block text-sm font-bold mb-2"
+    //           htmlFor="card-element"
+    //         >
+    //           Card Details
+    //         </label>
+    //         <CardElement
+    //           id="card-element"
+    //           options={{
+    //             style: {
+    //               base: {
+    //                 fontSize: "16px",
+    //                 color: "#424770",
+    //                 "::placeholder": {
+    //                   color: "#aab7c4",
+    //                 },
+    //               },
+    //               invalid: {
+    //                 color: "#9e2146",
+    //               },
+    //             },
+    //           }}
+    //         />
+    //       </div>
+    //       <button
+    //         className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    //         type="submit"
+    //         disabled={!stripe || loading}
+    //       >
+    //         {loading ? "Processing..." : "Pay"}
+    //       </button>
+    //       {error && (
+    //         <div className="text-red-500 text-sm mt-4 text-center">{error}</div>
+    //       )}
+    //     </form>
+    //   </div>
+    // </div>
   )
 }

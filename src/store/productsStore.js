@@ -79,7 +79,7 @@ export const useProductsStore = create((set, get) => {
         `${API_URL}/products/one?id=${productId}`
       )
       const { data } = response
-      console.log(data)
+      // console.log(data)
 
       set({ singleProduct: data.productData })
     } catch (error) {

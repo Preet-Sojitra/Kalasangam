@@ -209,8 +209,6 @@ export const ProductInfo = ({
   // }, [isUserLoggedIn])
 
   const { accessToken } = useAuthStore()
-  console.log("accessToken inside product info")
-  console.log(accessToken)
 
   //TODO: CHECK IF THIS IS REQUIRED OR NOT
   // useEffect(() => {
@@ -232,12 +230,10 @@ export const ProductInfo = ({
   const [isProductOutOfStock, setIsProductOutOfStock] = useState(
     availableQuantity === 0
   )
-  console.log("isProductOutOfStock", isProductOutOfStock)
 
   const [quantity, setQuantity] = useState(isProductOutOfStock ? 0 : 1)
   // const { dispatch } = useCart()
   const incrementQuantity = () => {
-    console.log("increment")
     // setQuantity(quantity + 1)
     // console.log("quantity inside increment", quantity)
 
@@ -271,24 +267,28 @@ export const ProductInfo = ({
     }
   }
   const addToCart = async () => {
+    toast("This feature is not available right now.", {
+      icon: "🥲",
+    })
+
     // console.log(customerId)
-    setIsLoading(true)
-    try {
-      const response = await axios.post(`${API_URL}/cart/add`, {
-        customer: customerId,
-        productId: productId,
-      })
-      const { data } = response
-      console.log(data)
-      setIsLoading(false)
-      toast.success("Added to cart")
-      setIsAddedToCart(true)
-    } catch (error) {
-      console.log("Error adding to cart")
-      console.log(error)
-      toast.error("Error adding to cart")
-      setIsLoading(false)
-    }
+    // setIsLoading(true)
+    // try {
+    //   const response = await axios.post(`${API_URL}/cart/add`, {
+    //     customer: customerId,
+    //     productId: productId,
+    //   })
+    //   const { data } = response
+    //   console.log(data)
+    //   setIsLoading(false)
+    //   toast.success("Added to cart")
+    //   setIsAddedToCart(true)
+    // } catch (error) {
+    //   console.log("Error adding to cart")
+    //   console.log(error)
+    //   toast.error("Error adding to cart")
+    //   setIsLoading(false)
+    // }
 
     // dispatch({
     //   type: 'ADD_TO_CART',
