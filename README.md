@@ -8,8 +8,7 @@ Kalasangam is an e-commerce platform for buying and selling handmade products. I
 
 ## Live Demo:
 
-The project is not deployed yet. I will deploy it soon or either I will provide a live demo of the project on youtube soon.
-<!-- You can view a live demo of the project on [youtube](https://youtu.be/d3sqFWYGBTk?si=LiZHsLfnqdwJ4NRj). -->
+The project is not deployed yet but you can view the demo video [here](https://youtu.be/XJ2Ksomaruo).
 
 ## Tech Stack:
 
